@@ -1,0 +1,38 @@
+// This module defines the score counter for the game and outputs values up to 8 score digits (Sprites) as an 8-value array
+// Note: This module only sets up the logic for the score counter, it doesn't create the sprite (As of now)
+
+module score_counter (
+  input logic score_add
+  input logic clk
+  output logic [7:0] score // Temporarily, We are going to output 8 value array 'score' since the Sprites will be created in a different module, we only need the numerical value for each digit of the score here
+);
+
+logic score_counter = 0;
+logic i;
+
+always_ff@(posedge clk)
+begin
+        if (score_add != 0)
+        begin
+        score_counter = score_counter + score_add;
+        end
+
+        elseif (score_increment == 0)
+        begin
+        score_counter = score_counter;
+
+        else // useless code, just to avoid inferred latch
+        score_counter = score_counter;
+end
+
+always_comb
+begin
+        for (i = 7; i >= 0; i--)
+        begin
+        score[i] = score_counter % 10; // Take value of the last digit
+        score_counter /= 10; // Discard the last digit, since decimals are ignored (integers only), this logic will remove the least significant bit (LSB)
+        end
+end
+
+endmodule
+        
