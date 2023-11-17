@@ -82,11 +82,23 @@ module cursor_controller(
             cursor_pos_y <= cursor_pos_y - displacement_y;  // Y is typically inverted
 
             // Boundary checks
-            if (cursor_pos_x >= SCREEN_WIDTH) cursor_pos_x <= SCREEN_WIDTH - 1;
-            else if (cursor_pos_x < 0) cursor_pos_x <= 0;
+            if (cursor_pos_x >= SCREEN_WIDTH) 
+            begin
+                cursor_pos_x <= SCREEN_WIDTH - 1;
+            end
+            else if (cursor_pos_x < 0)
+            begin
+                cursor_pos_x <= 0;
+            end
 
-            if (cursor_pos_y >= SCREEN_HEIGHT) cursor_pos_y <= SCREEN_HEIGHT - 1;
-            else if (cursor_pos_y < 0) cursor_pos_y <= 0;
+            if (cursor_pos_y >= SCREEN_HEIGHT) 
+            begin
+                cursor_pos_y <= SCREEN_HEIGHT - 1;
+            end
+            else if (cursor_pos_y < 0)
+            begin
+                cursor_pos_y <= 0;
+            end
         end
     end
 
