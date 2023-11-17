@@ -4,7 +4,7 @@
 
 module  cursor ( 
 input logic Reset, frame_clk,
-input logic Xdispl, Ydispl, // Mouse Displacement Input
+input logic [7:0] mouse_data, // Mouse Displacement Input
 output logic [9:0]  BallX, BallY, BallS
 );
     
@@ -46,25 +46,65 @@ output logic [9:0]  BallX, BallY, BallS
 				 else 
 					  Ball_Y_Position <= Ball_Y_Position;  // Ball is somewhere in the middle, just keep moving
 					  Ball_X_Position <= Ball_X_Position;
-	 end				 
+	 
+				 unique case (keycode)
+				 8'hFF : begin	// -1 displacement in x direction (left)
+						if (BallX - BallS <= Ball_X_Min)
+							begin
+								Ball_X_Position <= Ball_X_Min + BallS;
+							end
+						else
+							begin
+								Ball_X_Position <= Ball_X_Position - 1; // -1 displacement to position
+							end
+					  end
 
-	 if (Xdispl != 0)
-	 begin
-	 	Ball_X_Position <= Ball_X_Position + Xdispl;
-	 end
+				  8'h01 : begin	// +1 displacement in x direction (right)
+						if (BallX + BallS >= Ball_X_Max)
+							begin
+								Ball_X_Position <= Ball_X_Max - BallS;
+							end
+						else
+							begin
+								Ball_X_Position <= Ball_X_Position + 1; // +1 displacement to position
+							end
+					   end
+						
+				  8'hFE : begin	// -1 displacement in y direction (up) // THE HEX IS WRONG, JUST TEMPORARY
+						if (BallY - BallS <= Ball_Y_Min)
+							begin
+								Ball_Y_Position <= Ball_Y_Min + BallS;
+							end
+						else
+							begin
+								Ball_Y_Position <= Ball_Y_Position - 1; // -1 displacement to position
+							end
+					   end
 
-	 elseif (Ydispl != 0)
-	 begin
-	 	Ball_Y_Position <= Ball_Y_Position + Ydispl;
-	 end
+				  8'h02 : begin	// +1 displacement in y direction (down) // THE HEX IS WRONG, JUST TEMPORARY
+						if (BallY + BallS >= Ball_Y_Max)
+							begin
+								Ball_Y_Position <= Ball_Y_Max - BallS;
+							end
+						else
+							begin
+								Ball_Y_Position <= Ball_Y_Position + 1; // +1 displacement to position
+							end
+					   end
+					
+				  default:
+				 	 begin
+					 Ball_X_Position <= Ball_X_Position;
+					 Ball_X_Position <= Ball_X_Position;
+					 end
+					
+				  endcase
 
-	 else
-		Ball_X_Position <= Ball_X_Position;
-		Ball_Y_Position <= Ball_Y_Position;
-	
+		// Assign Final Outputs
+		assign BallY <= (Ball_Y_Position);
+		assign BallX <= (Ball_X_Position);
+
+	  end				 	 
     end
-				 
-	assign BallY <= (Ball_Y_Position);
-	assign BallX <= (Ball_X_Position);
-			
+					
 endmodule
