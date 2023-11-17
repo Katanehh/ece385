@@ -1,14 +1,14 @@
 // This module will control the way the cursor moves (BallX, BallY)
 // The output of this module will be assigned to CursorX and CursorY in Frame_Buffer
-// This module determines the next clock cycle position of the cursor, whether it moves or stay in the same position
+// This module determines the next clock cycle position of the cursor, whether it moves or stays in the same position
 
-module  ball ( 
+module  cursor ( 
 input logic Reset, frame_clk,
 input logic Xdispl, Ydispl, // Mouse Displacement Input
 output logic [9:0]  BallX, BallY, BallS
 );
     
-    logic [9:0] Ball_X_Motion, Ball_Y_Motion;
+    logic [9:0] Ball_X_Position, Ball_Y_Position;
     logic [9:0] Position_Counter = 0;
 
 	 
@@ -22,118 +22,39 @@ output logic [9:0]  BallX, BallY, BallS
     assign BallS = 4;  // default ball size (4 temporarily for testing)
    
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
-    begin: Move_Ball
+    begin
         if (Reset)  // asynchronous Reset
         begin 
-            Ball_Y_Motion <= 10'd0; 
-      			Ball_X_Motion <= 10'd0; //  I don't know why this was 10'd1 initially (11/16/2023)
+           	        Ball_Y_Position <= 10'd0; 
+      			Ball_X_Position <= 10'd0; 
       			BallY <= Ball_Y_Center; // Sets the cursor in the center of the screen when reset
       			BallX <= Ball_X_Center;
         end
            
-        else // Ensure Cursor doesn't leave the screen (only half the cursor can be beyond border)
+        else // Ensure the Cursor doesn't leave the screen (only half the cursor can be beyond the border)
         begin 
-				 if ( (BallY + BallS) >= Ball_Y_Max )  // Ball is at the bottom edge, Stuck at Border!
-					  Ball_Y_Motion <= Ball_Y_Max - BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
+				 if ( (BallY + BallS) >= Ball_Y_Max )  // Ball is at the bottom edge, Stuck at the Border!
+					  Ball_Y_Position <= Ball_Y_Max - BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
-				 else if ( (BallY - BallS) <= Ball_Y_Min )  // Ball is at the top edge, Stuck at Border!
-					  Ball_Y_Motion <= Ball_Y_Min + BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
+				 else if ( (BallY - BallS) <= Ball_Y_Min )  // Ball is at the top edge, Stuck at the Border!
+					  Ball_Y_Position <= Ball_Y_Min + BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
-				  else if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, Stuck at Border!
-					  Ball_X_Motion <= Ball_X_Max - BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
+				  else if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, Stuck at the Border!
+					  Ball_X_Position <= Ball_X_Max - BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
-				 else if ( (BallX - BallS) <= Ball_X_Min )  // Ball is at the Left edge, Stuck at Border!
-					  Ball_X_Motion <= Ball_X_Min + BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
+				 else if ( (BallX - BallS) <= Ball_X_Min )  // Ball is at the Left edge, Stuck at the Border!
+					  Ball_X_Position <= Ball_X_Min + BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
 				 else 
-					  Ball_Y_Motion <= Ball_Y_Motion;  // Ball is somewhere in the middle, just keep moving
-					  
-				 //modify to control ball motion with the mouse displacement
-          always_comb
-          begin
-                if (Xdispl > 0) // Mouse moved to the right
-                begin
-                    if ((BallX + BallS) >= Ball_X_Max) // Ball at right edge, ensure it doesn't go beyond border
-                    begin
-                      B
+					  Ball_Y_Position <= Ball_Y_Position;  // Ball is somewhere in the middle, just keep moving
+					  Ball_X_Position <= Ball_X_Position;
+	 end				 
 
-
-
-                end
-
-                elseif (Xdispl < 0) // Mouse moved to the left
-      
-      
-                elseif (Ydispl > 0) // Mouse moved down
-      
-                elseif (Ydispl < 0) // Mouse moved up
-      
-                else // default
-                    BallY <= (BallY + Ball_Y_Motion);
-          				  BallX <= (BallX + Ball_X_Motion);
-          end
-
-     /* unique case (keycode)
-					8'h04 : begin
-                          if ( (BallX - BallS) <= Ball_X_Min )  // Ball is at the Left edge, BOUNCE!
-					           begin
-					               Ball_X_Motion <= Ball_X_Step;
-					               BallX <= BallX + 2'b11;
-					           end 
-					       else
-                                begin
-								Ball_X_Motion <= -1;//A
-								Ball_Y_Motion<= 0;
-							    end
-						   end
-					        
-					8'h07 : begin
-						  if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, BOUNCE!
-					           begin    
-					              Ball_X_Motion <= (~ (Ball_X_Step) + 1'b1);  // 2's complement.
-					              BallX <= BallX - 2'b11;
-							   end
-						  else	
-							   begin	
-					               Ball_X_Motion <= 1;//D
-							       Ball_Y_Motion <= 0;
-							   end
-						end
-
-							  
-					8'h16 : begin
-                         if ((BallY + BallS) >= Ball_Y_Max )  // Ball is at the bottom edge, BOUNCE!
-                             begin
-					         Ball_Y_Motion <= (~ (Ball_Y_Step) + 1'b1);  // 2's complement.
-					         BallY <= BallY - 2'b11	;				        
-					         end
-					     else
-					         begin
-					        Ball_Y_Motion <= 1;//S
-							  Ball_X_Motion <= 0;
-							 end
-						end
-							  
-					8'h1A : begin
-					   if ( (BallY - BallS) <= Ball_Y_Min )  // Ball is at the top edge, BOUNCE!
-					       begin
-					           Ball_Y_Motion <= Ball_Y_Step;
-					           BallY <= BallY + 2'b11;
-					       end
-					   else
-					       begin
-					        Ball_Y_Motion <= -1;//W
-							  Ball_X_Motion <= 0;
-							 end
-						end	  
-					default: ;
-					        
-			   endcase */
+	
 				 
-				 BallY <= (BallY + Ball_Y_Motion);
-				 BallX <= (BallX + Ball_X_Motion);
+			BallY <= (BallY + Ball_Y_Position);
+			BallX <= (BallX + Ball_X_Position);
 			
-		end  
     end
       
 endmodule
