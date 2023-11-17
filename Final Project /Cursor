@@ -1,5 +1,5 @@
 // This module will control the way the cursor moves (BallX, BallY)
-// The output of this module will be assigned to CursorX and CursorY in Frame_Buffer
+// The output of this module will be utilized in Color Mapper with data from VGA Controller
 // This module determines the next clock cycle position of the cursor, whether it moves or stays in the same position
 
 module  cursor ( 
