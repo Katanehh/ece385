@@ -1,0 +1,53 @@
+// This module defines the 5-digit accuracy percentage that the user has in the map
+// The accuracy percentage consists of 5 digits, 1 "." as a decimal point, and a "% symbol
+// The 3 MSB (percentage [4:2]) are integer values, whereas the 2 LSB (percentage [1:0]) are decimal values
+// At the start of the map, the accuracy percentage will be 100% and changes according to the user's accuracy in hitting map timings
+// Output value in this module will be the accuracy percentage in the form of a 5-value array to be translated into sprites in a different module
+
+module accuracy_percentage (
+
+input clk,
+input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate)
+input logic hit_miss, // This variable determines if the user misses the map timing (1 = miss)
+output logic [4:0] percentage // This variable determines the user's accuracy percentage which will be reflected as a sprite (5 digits)
+
+);
+
+logic accuracy_counter = 0;
+logic max_accuracy_counter = 0; // This variable stores the maximum times the user is supposed to interact with the game (map)
+logic max_accuracy = 0; // This variable is max_accuracy_counter x 100 to show the highest score possible
+logic accuracy_gain = 100; // This variable stores the value of accuracy gained when the user accurately hits map timing
+logic precision_integer = 0; // This variable stores the integer value of the accuracy percentage
+logic i;
+
+always_ff@(posedge clk)
+begin
+        if (hit_accurate == 1)
+        begin
+        accuracy_counter = accuracy_counter + accuracy_gain;
+        max_accuracy_counter = max_accuracy_counter + 1;
+        end
+
+        elseif (hit_miss == 1)
+        begin
+        accuracy_counter = accuracy_counter;
+        max_accuracy_counter = max_accuracy_counter + 1;
+        end
+
+        else
+        accuracy_counter = accuracy_counter
+end
+
+always_comb
+begin
+        max_accuracy = max_accuracy_counter * 100;
+        precision_integer = (accuracy_counter / max_accuracy) * 100000; // precision_integer now temporarily holds the percentage value of the user's accuracy
+
+        for (i = 4; i >= 0; i--)
+        begin
+        percentage[i] = precision_integer % 10; // Take value of the last digit
+        precision_integer /= 10; // Discard the last digit, since decimals are ignored (integers only), this logic will remove the least significant bit (LSB)
+        end
+end
+
+endmodule
