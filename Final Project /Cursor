@@ -8,9 +8,7 @@ input logic Xdispl, Ydispl, // Mouse Displacement Input
 output logic [9:0]  BallX, BallY, BallS
 );
     
-    logic [9:0] Ball_X_Position, Ball_Y_Position;
-    logic [9:0] Position_Counter = 0;
-
+    logic [9:0] Ball_X_Position, Ball_Y_Position; // Position of the cursor
 	 
     parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
     parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
@@ -39,7 +37,7 @@ output logic [9:0]  BallX, BallY, BallS
 				 else if ( (BallY - BallS) <= Ball_Y_Min )  // Ball is at the top edge, Stuck at the Border!
 					  Ball_Y_Position <= Ball_Y_Min + BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
-				  else if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, Stuck at the Border!
+				 else if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, Stuck at the Border!
 					  Ball_X_Position <= Ball_X_Max - BallS;  // Ball will not go beyond the edge. Only half the Ball will go over
 					  
 				 else if ( (BallX - BallS) <= Ball_X_Min )  // Ball is at the Left edge, Stuck at the Border!
@@ -50,11 +48,23 @@ output logic [9:0]  BallX, BallY, BallS
 					  Ball_X_Position <= Ball_X_Position;
 	 end				 
 
+	 if (Xdispl != 0)
+	 begin
+	 	Ball_X_Position <= Ball_X_Position + Xdispl;
+	 end
+
+	 elseif (Ydispl != 0)
+	 begin
+	 	Ball_Y_Position <= Ball_Y_Position + Ydispl;
+	 end
+
+	 else
+		Ball_X_Position <= Ball_X_Position;
+		Ball_Y_Position <= Ball_Y_Position;
 	
-				 
-			BallY <= (BallY + Ball_Y_Position);
-			BallX <= (BallX + Ball_X_Position);
-			
     end
-      
+				 
+	assign BallY <= (Ball_Y_Position);
+	assign BallX <= (Ball_X_Position);
+			
 endmodule
