@@ -1,0 +1,97 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/17/2023 12:50:12 AM
+// Design Name: 
+// Module Name: cursor_controller
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module cursor_controller(
+    input logic frame_clk,  // System clock
+    input logic Reset,  // Asynchronous reset
+    input logic [31:0] keycode,  // Mouse data from USB
+    output logic [9:0] cursor_x,  // Horizontal position of the cursor
+    output logic [9:0] cursor_y,   // Vertical position of the cursor
+    output logic [9:0] cursor_size
+);
+
+    // Screen dimensions (example values, should be set according to your display)
+    parameter [9:0] SCREEN_WIDTH = 800;
+    parameter [9:0] SCREEN_HEIGHT = 525;
+    parameter [9:0] SCREEN_MIDDLEW = 400;
+    parameter [9:0] SCREEN_MIDDLEH = 262;
+    
+    assign cursor_size = 16;  // default ball size
+    
+    // Cursor position registers
+    logic [9:0] initcursor_pos_x; //= SCREEN_WIDTH / 2;
+    logic [9:0] initcursor_pos_y; //= SCREEN_HEIGHT / 2;
+    logic [15:0] cursor_pos_x; 
+    logic [15:0] cursor_pos_y; 
+
+    always_comb // sign extend so we do not add 9 bits to 16 bits
+    if (initcursor_pos_x[9] == 1'd1)
+        begin
+            cursor_pos_x = {6'b111111, initcursor_pos_x};
+        end
+    else
+        begin
+            cursor_pos_x = {6'b000000, initcursor_pos_x};
+        end
+        
+    always_comb
+    if (initcursor_pos_y[9] == 1'd1)
+        begin
+            cursor_pos_y = {6'b111111, initcursor_pos_y};
+        end
+    else
+        begin
+            cursor_pos_y = {6'b000000, initcursor_pos_y};
+        end    
+    
+    // Displacement extraction and sign extension
+    logic [15:0] displacement_x;
+    logic [15:0] displacement_y;
+
+    always_ff @(posedge frame_clk or posedge Reset) begin
+        if (Reset) begin
+            cursor_pos_x <= SCREEN_MIDDLEW;
+            cursor_pos_y <= SCREEN_MIDDLEH;
+        end 
+        else begin
+            // Extract displacements
+            displacement_x = keycode[31:16];
+            displacement_y = keycode[15:0];
+
+            // Update cursor position with boundary checks
+            cursor_pos_x <= cursor_pos_x + displacement_x;
+            cursor_pos_y <= cursor_pos_y - displacement_y;  // Y is typically inverted
+
+            // Boundary checks
+            if (cursor_pos_x >= SCREEN_WIDTH) cursor_pos_x <= SCREEN_WIDTH - 1;
+            else if (cursor_pos_x < 0) cursor_pos_x <= 0;
+
+            if (cursor_pos_y >= SCREEN_HEIGHT) cursor_pos_y <= SCREEN_HEIGHT - 1;
+            else if (cursor_pos_y < 0) cursor_pos_y <= 0;
+        end
+    end
+
+    // Assign updated cursor positions to outputs
+    assign cursor_x = cursor_pos_x;
+    assign cursor_y = cursor_pos_y;
+
+endmodule
