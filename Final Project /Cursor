@@ -56,6 +56,28 @@ output logic [9:0]  BallX, BallY, BallS
 						else
 							begin
 								Ball_X_Position <= Ball_X_Position - 1; // -1 displacement to position
+
+								8'hFE : begin	// -1 displacement in y direction (up) // THE HEX IS WRONG, JUST TEMPORARY
+									if (BallY - BallS <= Ball_Y_Min)
+									begin
+										Ball_Y_Position <= Ball_Y_Min + BallS;
+									end
+									else
+									begin
+										Ball_Y_Position <= Ball_Y_Position - 1; // -1 displacement to position
+									end
+									end
+					
+							 	8'h02 : begin	// +1 displacement in y direction (down) // THE HEX IS WRONG, JUST TEMPORARY
+									if (BallY + BallS >= Ball_Y_Max)
+									begin
+										Ball_Y_Position <= Ball_Y_Max - BallS;
+									end
+									else
+									begin
+										Ball_Y_Position <= Ball_Y_Position + 1; // +1 displacement to position
+									end
+									end
 							end
 					  end
 
