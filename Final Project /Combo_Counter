@@ -1,0 +1,33 @@
+// This module defines the combo or streak counter that users have in the game (it depends on the user's input (keyboard))
+// Combo will be lost when the user misses map timing
+// Input for this module is whether or not user accurately hits map timings (Expected Output from a Timing Module or something of that sort)
+// Output value in this module will not be a sprite. This module serves only as the logic behind the function (Integer Value)
+// This module is very similar to Health_Bar, except it will return counter to 0 if user misses map timing
+
+module combocounter (
+
+input clk,
+input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
+output logic health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
+
+);
+
+logic health_counter = 0;
+
+always_ff@(posedge clk)
+begin
+        if (hit_accurate == 1)
+        begin
+        health_counter = health_counter + 1;
+        end
+
+        else
+        health_counter = health_counter
+end
+
+always_comb
+begin
+        health = health_counter
+end
+
+endmodule
