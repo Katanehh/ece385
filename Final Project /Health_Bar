@@ -1,30 +1,23 @@
-// This module defines the health bar that users have in the game
-// Health will be lost for a fixed value when the user misses the map timings
-// Health can be regained when the user accurately hits map timings
+// This module defines the health bar that users have in the game (It increases from 0 - 100 %)
+// Health will be gained if the user accurately hits map timings
+// Health will not be reduced if user fails to hit map timings, no change
 // Output value in this module will not be a sprite. This module serves only as the logic behind the function
 
 module healthbar (
 
 input clk,
-input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate)
-input logic hit_miss, // This variable determines if the user misses the map timing (1 = miss)
+input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
 output logic health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
 
 );
 
 logic health_counter = 0;
-logic health_gain_loss = 10; // This variable stores the value of health gained or lost when the user accurately/inaccurately hits map timing
 
 always_ff@(posedge clk)
 begin
         if (hit_accurate == 1)
         begin
-        health_counter = health_counter + health_gain_loss;
-        end
-
-        elseif (hit_miss == 1)
-        begin
-        health_counter = health_counter - health_gain_loss;
+        health_counter = health_counter + 1;
         end
 
         else
@@ -33,17 +26,6 @@ end
 
 always_comb
 begin
-        if (health_counter >= 100) // Max Health
-        begin
-        health = 100;
-        end
-
-        elseif (health_counter <= 0) // Zero Health or Negative Health, Lose
-        begin
-        health = 0;
-        end
-
-        else // Stores local logic, health_counter, into output logic, health.
         health = health_counter
 end
 
