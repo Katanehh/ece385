@@ -35,7 +35,7 @@ begin
         end
 
         else
-        accuracy_counter = accuracy_counter
+        accuracy_counter = accuracy_counter;
 end
 
 always_comb
