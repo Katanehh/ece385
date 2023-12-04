@@ -8,26 +8,31 @@ module combocounter (
 
 input clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
-output logic health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
+output logic combo // This variable determines the user's combo or streak which will be reflected as a sprite (on the left of the screen)
 
 );
 
-logic health_counter = 0;
+logic streak_counter = 0;
 
 always_ff@(posedge clk)
 begin
         if (hit_accurate == 1)
         begin
-        health_counter = health_counter + 1;
+        streak_counter = streak_counter + 1;
+        end
+
+        elseif (hit_accurate == 0)
+        begin
+        streak_counter = 0;
         end
 
         else
-        health_counter = health_counter
+        streak_counter = streak_counter;
 end
 
 always_comb
 begin
-        health = health_counter
+        combo = streak_counter
 end
 
 endmodule
