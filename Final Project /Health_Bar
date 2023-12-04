@@ -21,12 +21,12 @@ begin
         end
 
         else
-        health_counter = health_counter
+        health_counter = health_counter;
 end
 
 always_comb
 begin
-        health = health_counter
+        health = health_counter;
 end
 
 endmodule
