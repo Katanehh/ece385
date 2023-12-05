@@ -3,7 +3,7 @@
 // The output will be the location of the incoming circle (X-Coordinates)
 
 module  circle_logic ( input logic Reset, frame_clk,
-			                 input logic spawn,
+		       input logic spawn,
                        output logic [9:0]  BallX, BallY, BallS );
 
     // logic 
@@ -34,21 +34,17 @@ module  circle_logic ( input logic Reset, frame_clk,
            
         else 
         begin 
-				 if (spawn == 1)
+	 if (spawn == 1)
           begin
             BallY <= Ball_Y_Center;
-		      	BallX <= Ball_X_Max;
+	    BallX <= Ball_X_Max;
           end
 
          else
           begin
             BallY <= Ball_Y_Center;
-		      	BallX <= BallX - 1;
-          end
-					  				 
-				 BallY <= (BallY + Ball_Y_Motion);
-				 BallX <= (BallX + Ball_X_Motion);
-			 
+	    BallX <= BallX - 1;
+          end			 
     end
       
 endmodule
