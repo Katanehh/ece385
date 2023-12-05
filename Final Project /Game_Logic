@@ -1,29 +1,23 @@
 // This module determines the logic for the game wherein keyboard input must be synced with the timings of the map
 // Input will be the keyboard inputs, Position of the ball (X-coordinate), and clock
-// Output will be whether or not user hits accurately
+// Output will be whether or not the user hits accurately 'accurate'
 
 module  game_logic ( input logic Reset, frame_clk,
-			               input logic [7:0] keycode, [9:0] BallX
-                     output logic [9:0]  BallX, BallY, BallS );
+		     input logic [7:0] keycode, [9:0] BallX
+                     output logic accurate );
     
     logic [9:0] Ball_X_Motion, Ball_Y_Motion;
 	 
-    parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
+    parameter [9:0] Ball_Target=50;  // Target Circle
     parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max=639;     // Rightmost point on the X axis
-    parameter [9:0] Ball_Y_Min=0;       // Topmost point on the Y axis
-    parameter [9:0] Ball_Y_Max=479;     // Bottommost point on the Y axis
-    parameter [9:0] Ball_X_Step=1;      // Step size on the X axis
-    parameter [9:0] Ball_Y_Step=1;      // Step size on the Y axis
-
-    assign BallS = 16;  // default ball size
    
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: Move_Ball
         if (Reset)  // asynchronous Reset
         begin 
-            Ball_Y_Motion <= 10'd0; //Ball_Y_Step;
+            		Ball_Y_Motion <= 10'd0; //Ball_Y_Step;
 			Ball_X_Motion <= 10'd1; //Ball_X_Step;
 			BallY <= Ball_Y_Center;
 			BallX <= Ball_X_Center;
