@@ -1,0 +1,17 @@
+// This module defines the logic of the fixed target circle
+// The output will be the location of the target circle to be drawn by color mapper
+
+module  target_circle ( input logic frame_clk,
+                        output logic [9:0]  TargetX, TargetY, TargetS );
+
+    parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle on X axis
+    parameter [9:0] Target_Y = 240; Center position of Y axis
+
+    assign BallS = 16;  // default ball size
+   
+    always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
+    begin: 
+			      BallY <= Target_Y;
+		      	BallX <= Target_X;   
+    end 
+endmodule
