@@ -7,7 +7,7 @@ module  target_circle ( input logic frame_clk,
     parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle on X axis
     parameter [9:0] Target_Y = 240; Center position of Y axis
 
-    assign BallS = 16;  // default ball size
+    assign TargetS = 8;  // default ball size
    
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: 
