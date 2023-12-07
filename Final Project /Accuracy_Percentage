@@ -1,15 +1,15 @@
-// This module defines the 5-digit accuracy percentage that the user has in the map
-// The accuracy percentage consists of 5 digits, 1 "." as a decimal point, and a "% symbol
-// The 3 MSB (percentage [4:2]) are integer values, whereas the 2 LSB (percentage [1:0]) are decimal values
+// This module defines the 3-digit (whole numbers) accuracy percentage that the user has in the map
+// The accuracy percentage consists of 3 digits
+// The 3 MSB (percentage [2:0]) are integer values
 // At the start of the map, the accuracy percentage will be 100% and changes according to the user's accuracy in hitting map timings
-// Output value in this module will be the accuracy percentage in the form of a 5-value array to be translated into sprites in a different module
+// Output value in this module will be the accuracy percentage in the form of a 3-value array to be translated into sprites in a different module
 
 module accuracy_percentage (
 
 input logic Clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate)
 input logic hit_miss, // This variable determines if the user misses the map timing (1 = miss)
-output logic [4:0] percentage // This variable determines the user's accuracy percentage which will be reflected as a sprite (5 digits)
+output logic [2:0] percentage // This variable determines the user's accuracy percentage which will be reflected as a sprite (3 digits), whole number
 
 );
 
@@ -49,7 +49,7 @@ begin
         max_accuracy = max_accuracy_counter * 100;
         precision_integer = (accuracy_counter / max_accuracy) * 100000; // precision_integer now temporarily holds the percentage value of the user's accuracy
 
-        for (i = 4; i >= 0; i--)
+        for (i = 2; i >= 0; i--)
         begin
         percentage[i] = precision_integer % 10; // Take value of the last digit
         precision_integer /= 10; // Discard the last digit, since decimals are ignored (integers only), this logic will remove the least significant bit (LSB)
