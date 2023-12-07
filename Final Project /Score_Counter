@@ -17,7 +17,7 @@ begin
         score_counter = score_counter + score_add;
         end
 
-        elseif (score_increment == 0)
+        else if (score_increment == 0)
         begin
         score_counter = score_counter;
 
