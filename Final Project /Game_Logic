@@ -19,7 +19,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
         begin 
 			yes = yes; // we don't care
         end
-           
+
         else 
         begin 				  
 				 //modify to control circle input with the keycode
