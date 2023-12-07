@@ -1,0 +1,22 @@
+// This module defines whether or not the user passes or fails the game depending on input health from the 'health_bar' module
+// Output value in this module will be signal 'pass' wherein 1 is pass, and 0 is fail
+
+module pass_fail (
+
+input logic Clk,
+input logic health, 
+output logic pass
+
+);
+
+always_ff@(posedge Clk)
+begin
+        if (health >= 2)
+        begin
+        pass = 1;
+        end
+
+        else
+        pass = 0;
+end
+endmodule
