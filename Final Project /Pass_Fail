@@ -4,19 +4,19 @@
 module pass_fail (
 
 input logic Clk,
-input logic health, 
+input logic [3:0] health, 
 output logic pass
 
 );
 
 always_ff@(posedge Clk)
 begin
-        if (health >= 2)
+        if (health >= 3'd2)
         begin
-        pass = 1;
+        pass = 1'd1;
         end
 
         else
-        pass = 0;
+        pass = 1'd0;
 end
 endmodule
