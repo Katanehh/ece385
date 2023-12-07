@@ -11,7 +11,7 @@ module  target_circle ( input logic frame_clk,
    
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: 
-			BallY <= Target_Y;
-		      	BallX <= Target_X;   
+			TargetY <= Target_Y;
+		      	TargetX <= Target_X;   
     end 
 endmodule
