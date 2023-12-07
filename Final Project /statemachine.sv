@@ -1,9 +1,9 @@
 module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                         input logic [7:0] keycode,
-                        output logic main, playbackground, fail, success
+		    output logic main, playbackground, fail, success, spawn, [1:0] circletype
                     );
 
-    enum logic [1:0] {  mainscreen, playscreen, failscreen1, failscreen2, failscreen3, failscreen4, passscreen} current_state, next_state;
+	enum logic [1:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, failscreen1, failscreen2, failscreen3, failscreen4, passscreen} current_state, next_state;
 
     always_ff @ (posedge Clk)
     begin
@@ -20,6 +20,8 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
         playbackground = 1'b0;
         fail = 1'b0;
         success = 1'b0;
+	spawn = 1'b0;
+	circletype = 2'b0;
 
         unique case (current_state)
             mainscreen:
@@ -57,7 +59,25 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                     next_state = current_state;
                 end
             end
-            
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
             failscreen1:
 			    next_state = failscreen2;
 			
