@@ -66,7 +66,28 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
 						   end
 						end
 
-							  
+					8'h1D && 8'h1B : begin // Z and X
+						  if (type == 1)  // Ball is blue (big)
+					           begin
+					        	if (BallX == Ball_Target_X)
+								begin
+									accurate = 1;
+									out_of_bounds = 1;
+								end
+					          
+							elseif (BallX < Ball_Target_X)
+								begin
+									accurate = 0;
+									out_of_bounds = 1;
+								end
+					      		 else
+                               			  		begin
+									accurate = 0;
+									out_of_bounds = 0;
+							    	end
+						   end
+						end
+
 					8'h06 : begin // C
                         			 if (type == 2)  // Ball is red (small)
 					           begin
@@ -109,7 +130,30 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
 									out_of_bounds = 0;
 							    	end
 						   end
-						end	  
+						end
+
+					8'h06 && 8'h19 : begin // C and V
+						  if (type == 3)  // Ball is red (big)
+					           begin
+					        	if (BallX == Ball_Target_X)
+								begin
+									accurate = 1;
+									out_of_bounds = 1;
+								end
+					          
+							elseif (BallX < Ball_Target_X)
+								begin
+									accurate = 0;
+									out_of_bounds = 1;
+								end
+					      		 else
+                               			  		begin
+									accurate = 0;
+									out_of_bounds = 0;
+							    	end
+						   end
+						end
+
 					default: ;
 			   endcase
 			
