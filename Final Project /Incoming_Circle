@@ -48,7 +48,7 @@ module  incoming_circle ( input logic Reset, frame_clk,
     end
 
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
-    begin: 
+    begin: Move_ball
         if (Reset)  // asynchronous Reset - kinda useless
         begin 
 		BallY <= Ball_Y_Center;
@@ -68,6 +68,7 @@ module  incoming_circle ( input logic Reset, frame_clk,
             BallY <= Ball_Y_Center;
 	    BallX <= BallX - 1;
           end			 
-    end
+        end
+     end
       
 endmodule
