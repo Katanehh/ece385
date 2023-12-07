@@ -18,7 +18,7 @@ module  incoming_circle ( input logic Reset, frame_clk,
     parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle
     parameter [9:0] Target_Y = 240;
 
-    assign BallS = 16;  // default ball size
+    assign BallS = 8;  // default ball size
    
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: 
