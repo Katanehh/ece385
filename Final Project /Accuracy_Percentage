@@ -13,25 +13,31 @@ output logic [4:0] percentage // This variable determines the user's accuracy pe
 
 );
 
-logic accuracy_counter = 0;
-logic max_accuracy_counter = 0; // This variable stores the maximum times the user is supposed to interact with the game (map)
-logic max_accuracy = 0; // This variable is max_accuracy_counter x 100 to show the highest score possible
-logic accuracy_gain = 100; // This variable stores the value of accuracy gained when the user accurately hits map timing
-logic precision_integer = 0; // This variable stores the integer value of the accuracy percentage
+logic accuracy_counter;
+logic max_accuracy_counter; // This variable stores the maximum times the user is supposed to interact with the game (map)
+logic max_accuracy; // This variable is max_accuracy_counter x 100 to show the highest score possible
+logic accuracy_gain; // This variable stores the value of accuracy gained when the user accurately hits map timing
+logic precision_integer; // This variable stores the integer value of the accuracy percentage
 logic i;
+
+assign accuracy_counter = 0;
+assign max_accuracy_counter = 0;
+assign max_accuracy = 0;
+assign accuracy_gain = 100;
+assign precision_integer = 0;
 
 always_ff@(posedge Clk)
 begin
-        if (hit_accurate == 1)
+        if (hit_accurate == 1'd1)
         begin
         accuracy_counter = accuracy_counter + accuracy_gain;
-        max_accuracy_counter = max_accuracy_counter + 1;
+        max_accuracy_counter = max_accuracy_counter + 1'd1;
         end
 
-        else if (hit_miss == 1)
+        else if (hit_miss == 1'd1)
         begin
         accuracy_counter = accuracy_counter;
-        max_accuracy_counter = max_accuracy_counter + 1;
+        max_accuracy_counter = max_accuracy_counter + 1'd1;
         end
 
         else
