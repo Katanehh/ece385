@@ -4,9 +4,9 @@
 
 module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determines the color and size of the incoming circle - 0, 1 is blue, 2, 3 is red (0 and 1 combined is big blue) (2 and 3 combined is big red)
 		     input logic [7:0] keycode, [9:0] BallX
-                     output logic accurate );
+                     output logic accurate, out_of_bounds ); // output signal accurate determines that the user input is timed correctly with incoming circle, out_of_bounds defines the incoming circle being already outside the user's target circle (miss) (this signal will inform color mapper to stop displaying it on the screen)
 	 
-    parameter [9:0] Ball_Target=50;     // Target Circle
+    parameter [9:0] Ball_Target_X = 50;     // Target Circle on X axis
     parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max=639;     // Rightmost point on the X axis
