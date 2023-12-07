@@ -22,7 +22,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
         begin 				  
 				 //modify to control circle input with the keycode
 				unique case (keycode)
-					8'h04 : begin
+					8'h1D : begin // Z
                           if ( (BallX - BallS) <= Ball_X_Min )  // Ball is at the Left edge, BOUNCE!
 					           begin
 					               Ball_X_Motion <= Ball_X_Step;
@@ -35,7 +35,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
 							    end
 						   end
 					        
-					8'h07 : begin
+					8'h1B : begin // X
 						  if ( (BallX + BallS) >= Ball_X_Max )  // Ball is at the Right edge, BOUNCE!
 					           begin    
 					              Ball_X_Motion <= (~ (Ball_X_Step) + 1'b1);  // 2's complement.
@@ -49,7 +49,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
 						end
 
 							  
-					8'h16 : begin
+					8'h06 : begin // C
                          if ((BallY + BallS) >= Ball_Y_Max )  // Ball is at the bottom edge, BOUNCE!
                              begin
 					         Ball_Y_Motion <= (~ (Ball_Y_Step) + 1'b1);  // 2's complement.
@@ -62,7 +62,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] type, // type determine
 							 end
 						end
 							  
-					8'h1A : begin
+					8'h19 : begin // V
 					   if ( (BallY - BallS) <= Ball_Y_Min )  // Ball is at the top edge, BOUNCE!
 					       begin
 					           Ball_Y_Motion <= Ball_Y_Step;
