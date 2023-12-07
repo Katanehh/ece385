@@ -4,6 +4,7 @@
 
 module  Incoming_Circle ( input logic Reset, frame_clk,
 		                  input logic spawn, 
+		                  input logic playbackground,
 		                  input logic [1:0] circletype,
                           output logic [9:0]  BallX, BallY, BallS, 
                           output logic color );
@@ -19,7 +20,10 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
 
     parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle
     parameter [9:0] Target_Y = 240;
-
+    
+    logic balls;
+    assign balls = Ball_X_Max;
+    
     always_comb
     begin
     	if (circletype == 2'd0 || circletype == 2'd2)
@@ -58,18 +62,13 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
         end
            
         else 
-        begin 
-            if (spawn == 1'd1)
-              begin
-                BallY <= Ball_Y_Center;
-                BallX <= Ball_X_Max;
-              end
-    
-             else
-              begin
-                BallY <= Ball_Y_Center;
-                BallX <= BallX - 1'd1;
-            end			 
+        begin
+            if (playbackground == 1'd1 && spawn == 1'd1)
+            begin         
+                    BallY <= Ball_Y_Center;
+                    balls <= balls - 1'd1;	
+                    BallX <= balls;
+            end	 
         end
     end
       
