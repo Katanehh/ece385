@@ -1,4 +1,4 @@
-module map (input logic Clk, Reset, 
+module map 		(input logic Clk, Reset, playbackground
                         input logic [7:0] keycode,
                         output logic spawn, circletype
                     );
