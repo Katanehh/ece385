@@ -27,7 +27,7 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h1D : begin // Z
                         			  if (circletype == 0)  // Ball is blue (small)
 					           begin
-					        	if ((BallX == Ball_Target_X) || (BallX == Ball_Target_X))
+					        	if ((BallX < 16 + Ball_Target_X) || (BallX > Ball_Target_X))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
