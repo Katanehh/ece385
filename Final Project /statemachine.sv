@@ -47,11 +47,6 @@ module statemachine(	input logic Clk, Reset,
                     next_state = failscreen;
                 end
                 
-                else if (playerpass)
-                begin
-                    next_state = passscreen;
-                end
-                
                 else
                 begin
                     next_state = beat1;
