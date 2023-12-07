@@ -1,5 +1,5 @@
 module statemachine(	input logic Clk, Reset,
-		    	input logic out_of_bounds,
+		    	        //input logic out_of_bounds,
                         input logic [3:0] health,
                         input logic [7:0] keycode,
                         output logic main, playbackground, fail, success, spawn, 
@@ -152,16 +152,17 @@ module statemachine(	input logic Clk, Reset,
                     next_state = failscreen;
                 end
                 
-                else
-                begin
-			if (out_of_bounds == 4) // ensures all circles either pressed or missed - Wrong correct this logic
-			begin
-               			next_state = finished;
-			end
+//                else
+//                begin
+//			if (out_of_bounds == 4) // ensures all circles either pressed or missed
+//			begin
+//               			next_state = finished;
+//			end
 
-			else
-				next_state = buffer4;
-                end
+			     else
+                 begin
+                    next_state = finished;
+                 end
             end
             
             finished:
