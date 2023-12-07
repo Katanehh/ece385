@@ -1,6 +1,6 @@
 // This module defines the logic of the left-moving circle which is the incoming circles to hit (depending on the input from another module which determines when to spawn the circles based on the map)
 // The input will be 'spawn' which is the time at which the circles will spawn depending on the map (different module) and 'type' which determines the characteristic of the circle
-// The output will be the location of the incoming circle (X-Coordinates), the size of the circle (small/big) and the color (blue/)
+// The output will be the location of the incoming circle (X-Coordinates), the size of the circle (small/big) and the color (blue/red) (0/1)
 
 module  incoming_circle ( input logic Reset, frame_clk,
 		          input logic spawn, [1:0] type,
