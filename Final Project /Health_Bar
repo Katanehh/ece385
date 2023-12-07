@@ -3,25 +3,29 @@
 // Health will not be reduced if user fails to hit map timings, no change
 // Output value in this module will not be a sprite. This module serves only as the logic behind the function
 
-module healthbar (
+module Health_Bar (
 
 input logic Clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
-output logic health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
+output logic [3:0] health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
 
 );
 
-logic health_counter = 0;
+logic health_counter;
+
+assign health_counter = 0;
 
 always_ff@(posedge Clk)
 begin
-        if (hit_accurate == 1)
+        if (hit_accurate == 1'd1)
         begin
-        health_counter = health_counter + 1;
+        health_counter = health_counter + 1'd1;
         end
 
         else
+        begin
         health_counter = health_counter;
+        end
 end
 
 always_comb
