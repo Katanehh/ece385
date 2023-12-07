@@ -1,4 +1,5 @@
-module statemachine(	input logic Clk, Reset, playerpass,
+module statemachine(	input logic Clk, Reset,
+		   	input logic [3:0] health,
                         input logic [7:0] keycode,
                         output logic main, playbackground, fail, success, spawn, 
                         output logic [1:0] circletype
@@ -163,12 +164,12 @@ module statemachine(	input logic Clk, Reset, playerpass,
             
             finished:
             begin
-               if (playerpass == 1)
+		    if (health >= 3'd2) // hard coded the max health
                begin
                     next_state = passscreen;
                end
                
-               else if (playerpass == 0)
+               else 
                begin
                     next_state = failscreen;
                end
