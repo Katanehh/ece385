@@ -12,18 +12,20 @@ output logic combo // This variable determines the user's combo or streak which 
 
 );
 
-logic streak_counter = 0;
+logic streak_counter;
+
+assign streak_counter = 0;
 
 always_ff@(posedge Clk)
 begin
-        if (hit_accurate == 1)
+        if (hit_accurate == 1'd1)
         begin
-        streak_counter = streak_counter + 1;
+        streak_counter = streak_counter + 1'd1;
         end
 
-        else if (hit_accurate == 0)
+        else if (hit_accurate == 1'd0)
         begin
-        streak_counter = 0;
+        streak_counter = 1'd0;
         end
 
         else
