@@ -75,7 +75,7 @@ module mb_usb_hdmi_top(
     logic passsig;
     
     // statemachine logic
-    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig;
+    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig, clk_outsig;
     logic [1:0] circlesig;
     
     // logic for all sprite outputs
@@ -248,8 +248,9 @@ module mb_usb_hdmi_top(
 //    );
     
     statemachine state_instance(
-        .Clk(clk_25MHz),
+        .Clk(clk_outsig),
         .Reset(reset_ah),
+        //.out_of_bounds(out_of_bounds_sig),
         .health(healthsig),
         .keycode(keycode0_gpio[7:0]),
         .main(mainsig),
@@ -298,6 +299,12 @@ module mb_usb_hdmi_top(
         .red(mainr),
         .green(maing),
         .blue(mainb)
+    );
+    
+    clock_divider divider_instance(
+        .clk_in(clk_25MHz),
+        .reset(reset_ah),
+        .clk_out(clk_outsig)
     );
     
 endmodule
