@@ -3,7 +3,7 @@
 // The output will be the location of the incoming circle (X-Coordinates), the size of the circle (small/big), and the color (blue/red) (0/1)
 
 module  incoming_circle ( input logic Reset, frame_clk,
-		          input logic spawn, [1:0] type,
+		          input logic spawn, [1:0] circletype,
                           output logic [9:0]  BallX, BallY, BallS, color );
 	 
     parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
@@ -20,27 +20,27 @@ module  incoming_circle ( input logic Reset, frame_clk,
 
     always_comb
     begin
-    	if (type == 0 || type == 2)
+    	if (circletype == 0 || circletype == 2)
     	begin
         	BallS = 8;  // small size
-		if (type == 0)
+		if (circletype == 0)
 		begin
 			color = 0; // blue
 		end
-		else // (type == 2)
+		else // (circletype == 2)
 		begin
 			color = 1; // red
 		end
      	end
 
-   	 else // (type == 1 || type == 3)
+   	 else // (circletype == 1 || circletype == 3)
    	 begin
    		 BallS = 16; // big size
-		 if (type == 1)
+		 if (circletype == 1)
 		 begin
 			color = 0; // blue
 		 end
-		 else // (type == 3)
+		 else // (circletype == 3)
 		 begin
 			color = 1; // red
 		 end
