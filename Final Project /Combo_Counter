@@ -32,7 +32,7 @@ end
 
 always_comb
 begin
-        combo = streak_counter
+        combo = streak_counter;
 end
 
 endmodule
