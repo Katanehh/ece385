@@ -10,12 +10,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
     parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max=639;     // Rightmost point on the X axis
-   
+
+    logic yes;
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: Move_Ball
         if (Reset)  // asynchronous Reset
         begin 
-			BallX <= Ball_X_Max;
+			yes = yes; // we don't care
         end
            
         else 
