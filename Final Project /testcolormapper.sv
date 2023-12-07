@@ -128,30 +128,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 	logic GBADraw2XBound, GBADraw2YBound;
 	//logic enterECEB;
 
-	 //comment this out when u use the always_ff 
-	 // ahhhhh read read
-//	 assign SpriteY = Sprite_Y_Center;
-//	 assign SpriteX = Sprite_X_Center;
-
-    //intializing ScreenX/Y to top left corner of map, can change later.
-    // assign ScreenX = 1'b0;
-    // assign ScreenY = 1'b0; 
-
-
-	// reg [38399:0] endregister; // endscreen: 240x160
-
-	// initial begin
-	// 	reg [38399:0] mem_data;
-  	// 	$readmemb("binary_image.bin", mem_data);
-
-	// 	// Transfer contents of memory to registers
-	// 	for (int i = 0; i < 68400; i++) begin
-	// 		endregister[i] = mem_data[i];
-	// 	end
-	// end
-	
-	// logic title_end_rom_q;
-
     always_comb
     begin:sprite_on_proc
         if ( ((-7 <= DistX) & (DistX <= 6) & ((-10 <= DistY) & (DistY <= 8))) & map) 
@@ -189,30 +165,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 		GBADraw2XBound = (0 <= GBADraw2X) & (GBADraw2X < 960); // [0-959]
 		GBADraw2YBound = (0 <= GBADraw2Y) & (GBADraw2Y < 640); // [0-639]
 
-        // //-----------------------------
-        // //GBA screen implemenations
-        // GBAWindow = (80 <= DrawX) & (DrawX < 560) & (80 <= DrawY) & (DrawY < 400);
-        
-		// isBallCenter = (SpriteX == Sprite_X_Center) & (SpriteY == Sprite_Y_Center);
-
-		// // logic for determining if screen window is on edge of map
-		// isWinOnLeftEdge = (ScreenX <= Screen_X_Min); 
-		// isWinOnRightEdge = (ScreenX >= Screen_X_Max);
-		// isWinOnTopEdge = (ScreenY <= Screen_Y_Min);
-		// isWinOnBottomEdge = (ScreenY >= Screen_Y_Max);
-		// // logic for determining if screen window is on a specific corner edge of map
-		// isWinOnTopLeftCorner = isWinOnTopEdge & isWinOnLeftEdge;
-		// isWinOnTopRightCorner = isWinOnTopEdge & isWinOnRightEdge;
-		// isWinOnBottomLeftCorner = isWinOnBottomEdge & isWinOnLeftEdge;
-		// isWinOnBottomRightCorner = isWinOnBottomEdge & isWinOnRightEdge;
-		// // logic for determining if screen window is on a corner
-		// isWinOnAnyCorner = isWinOnTopLeftCorner | isWinOnTopRightCorner | isWinOnBottomLeftCorner | isWinOnBottomRightCorner;
-		// //all inclusive case sdjigfdjosjbfjdoisjg
-		// isWinOnAnyEdge = isWinOnLeftEdge | isWinOnRightEdge | isWinOnTopEdge | isWinOnBottomEdge;  
-
-        //no scrolling, static background code
-        // GBADraw2X = DrawX - 80; // GBADraw2X = [0, 480]
-        // GBADraw2Y = DrawY - 80; // GBADraw2Y = [0, 320]
 
         //scrolling implemention
         GBADraw2X = DrawX - 80 + (ScreenX * 2);
@@ -225,18 +177,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 		collisionXCenter = Sprite_X_Center - 80 + (ScreenX * 2);
 		collisionYCenter = Sprite_Y_Center + 8 - 80 + (ScreenY * 2);
 
-        // address into the rom = (x* xDim ) / 480 + ((y * yDim) / 320) * xDim
-        //rom = (GBADraw2x* ImageXDim ) / ScreenWidth + ((GBADraw2Y* ImageYDim) / ScreenHeight) * ScreenWidth
-
-        // for the pokemon firered map 1x 
-        //rom_address = ((GBADraw2X * 240) / 480) + (((GBADraw2Y * 160) / 320) * 240);
-        // ---------------------------------------------
-        // for the pokemon firered map 2x/northwquaddraft 
-		  // Drawing full map on it
-        //rom_address = GBADraw2X + (GBADraw2Y * 480);
-		  
-		  //---------------------------
-		  // res; 480 x 320, want to see top right 240x160 part
 		  
 		  rom_address = (GBADraw2X / 2) + ((GBADraw2Y / 2) * 480); // calculating rom_address of map
 			rom_q = rom_q_map;
@@ -253,9 +193,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 
 		collisionX = ~qX;
 		collisionY = ~qY;
-//		collision_down = ~q2;
-//		collision_left = ~q3;
-//		collision_right = ~q4;
 
 
 
@@ -302,22 +239,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 		//-----------------------------
         //GBA screen implemenations
 
-//		isBallCenter = (SpriteX == Sprite_X_Center) & (SpriteY == Sprite_Y_Center);
-//
-//		// logic for determining if screen window is on edge of map
-//		isWinOnLeftEdge = (ScreenX <= Screen_X_Min); 
-//		isWinOnRightEdge = (ScreenX >= Screen_X_Max);
-//		isWinOnTopEdge = (ScreenY <= Screen_Y_Min);
-//		isWinOnBottomEdge = (ScreenY >= Screen_Y_Max);
-//		// logic for determining if screen window is on a specific corner edge of map
-//		isWinOnTopLeftCorner = isWinOnTopEdge & isWinOnLeftEdge;
-//		isWinOnTopRightCorner = isWinOnTopEdge & isWinOnRightEdge;
-//		isWinOnBottomLeftCorner = isWinOnBottomEdge & isWinOnLeftEdge;
-//		isWinOnBottomRightCorner = isWinOnBottomEdge & isWinOnRightEdge;
-//		// logic for determining if screen window is on a corner
-//		isWinOnAnyCorner = isWinOnTopLeftCorner | isWinOnTopRightCorner | isWinOnBottomLeftCorner | isWinOnBottomRightCorner;
-//		//all inclusive case sdjigfdjosjbfjdoisjg
-//		isWinOnAnyEdge = isWinOnLeftEdge | isWinOnRightEdge | isWinOnTopEdge | isWinOnBottomEdge; 
 
         if (Reset | intro | battle) begin
 		  // begin a
@@ -326,13 +247,7 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 			Screen_X_Motion <= 0;
 			Screen_Y_Motion <= 0;
         end
-		// else if (map) begin
-		//   // begin a
-        //     ScreenX <= 10'b0000010000;
-        //     ScreenY <= 10'b0;
-		// 	Screen_X_Motion <= 0;
-		// 	Screen_Y_Motion <= 0;
-        // end
+	    
         else 
 		begin
 				//checking if ScreenX is at min. (unsigned -1 == 10'bFFF)
@@ -405,169 +320,7 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 								Screen_Y_Motion <= 1;
 							end
 						end		
-						// 	// 2 key presses
-					
-						//   // W, A, up, left
-						//   	16'h1A04 : begin
-						// 		// calculate addr of left neighbor pixel
-						// 		collision_rom_addr_X = ((collisionXCenter-7)/2) + (((collisionYCenter)/2)*480);
-						// 		// calculate addr of top neighbor pixel
-						// 		collision_rom_addr_Y = ((collisionXCenter-7)/2) + (((collisionYCenter-8)/2)*480);
-						// 		if(((ScreenX <= Screen_X_Min) & (ScreenY <= Screen_Y_Min)) | (collisionX & collisionY)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if(((ScreenX <= Screen_X_Min) & !(ScreenY <= Screen_Y_Min)) | (collisionX & !collisionY)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 		if((!(ScreenX <= Screen_X_Min) & (ScreenY <= Screen_Y_Min)) | (!collisionX & collisionY)) begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 	end
-						// 	// A, W, left, up
-						// 	16'h041A : begin
-						// 		// calculate addr of left neighbor pixel
-						// 		collision_rom_addr_X = ((collisionXCenter-7)/2) + (((collisionYCenter)/2)*480);
-						// 		// calculate addr of top neighbor pixel
-						// 		collision_rom_addr_Y = ((collisionXCenter-7)/2) + (((collisionYCenter-8)/2)*480);
-						// 		if(((ScreenX <= Screen_X_Min) & (ScreenY <= Screen_Y_Min)) | (collisionX & collisionY)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if(((ScreenX <= Screen_X_Min) & !(ScreenY <= Screen_Y_Min)) | (collisionX & !collisionY)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 		if((!(ScreenX <= Screen_X_Min) & (ScreenY <= Screen_Y_Min)) | (!collisionX & collisionY)) begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-                    	// 	end
-						//   // W, D, up, right
-						//   	16'h1A07 : begin
-						// 		if((ScreenX >= Screen_X_Max) & (ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX >= Screen_X_Max) & !(ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 		if(!(ScreenX >= Screen_X_Max) & (ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 	end
-						// 	// D,W, right, up
-						//   	16'h071A : begin
-						// 		if((ScreenX >= Screen_X_Max) & (ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX >= Screen_X_Max) & !(ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 		if(!(ScreenX >= Screen_X_Max) & (ScreenY <= Screen_Y_Min)) begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= -1;
-						// 		end
-						// 	end
-							
-						// 	// D, S, right, down
-						// 	16'h0716 : begin
-						// 		if((ScreenX >= Screen_X_Max) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX >= Screen_X_Max) & !(ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 		if(!(ScreenX >= Screen_X_Max) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 	end
-						// 	// S, D, down, right
-						// 	16'h1607 : begin
-						// 		if((ScreenX >= Screen_X_Max) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX >= Screen_X_Max) & !(ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 		if(!(ScreenX >= Screen_X_Max) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= 1;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 	end
-						// 	// S, A, down, left
-						// 	16'h1604 : begin
-						// 		if((ScreenX <= Screen_X_Min) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX <= Screen_X_Min) & !(ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 		if(!(ScreenX <= Screen_X_Min) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 	end
-						// 	// A, S, left, down
-						// 	16'h0416 : begin
-						// 		if((ScreenX <= Screen_X_Min) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		if((ScreenX <= Screen_X_Min) & !(ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= 0;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 		if(!(ScreenX <= Screen_X_Min) & (ScreenY >= Screen_Y_Max)) begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 0;
-						// 		end
-						// 		else begin
-						// 			Screen_X_Motion <= -1;
-						// 			Screen_Y_Motion <= 1;
-						// 		end
-						// 	end
+						
 					default: begin
                         Screen_X_Motion <= 0;
                         Screen_Y_Motion <= 0;   
@@ -595,114 +348,6 @@ module  color_mapper ( input        [9:0]  DrawX, DrawY,
 			SpriteX <= Sprite_X_Center;
 		  end
 	end //remove when you do full always_ff
-    //     else 
-    //     begin 
-	// 			 if (isWinOnAnyEdge)
-	// 			 begin
-	// 				  Sprite_Y_Motion <= Sprite_Y_Motion;  // Ball is somewhere in the middle, don't bounce, just keep moving
-	// 				  Sprite_X_Motion <= Sprite_X_Motion;
-	// 			 case(keycode)
-	// 				// two key press
-	// 				16'h041A : begin	// A and W
-	// 						Sprite_Y_Motion <= -1; //W
-	// 						Sprite_X_Motion <= -1; // A
-	// 						 end
-	// 				16'h1A04 : begin	// W and A
-	// 						Sprite_Y_Motion <= -1; // W
-	// 						Sprite_X_Motion <= -1; // A
-	// 						 end
-	// 				16'h071A : begin // D and W
-	// 				        Sprite_X_Motion <= 1;//D
-	// 						Sprite_Y_Motion <= -1; // W
-	// 						  end		 
-	// 				16'h1A07 : begin // W and S
-	// 				        Sprite_X_Motion <= 1;//D
-	// 						Sprite_Y_Motion <= -1; // W
-	// 						  end
-	// 				16'h1607 : begin // S and D
-	// 				        Sprite_X_Motion <= 1;
-	// 						Sprite_Y_Motion <= 1;
-	// 						  end
-	// 				16'h0716 : begin // D and S
-	// 				        Sprite_X_Motion <= 1;
-	// 						Sprite_Y_Motion <= 1;
-	// 						  end
-	// 				16'h1604 : begin //S and A
-	// 							Sprite_X_Motion <= -1;
-	// 							Sprite_Y_Motion<= 1;
-	// 						  end
-	// 				16'h0416 : begin //A and S
-	// 							Sprite_X_Motion <= -1;
-	// 							Sprite_Y_Motion<= 1;
-	// 						  end
-	// 			 	// one key press
-	// 			 	16'h0004 : begin //A
-	// 							if(((isWinOnLeftEdge) & (SpriteX > Sprite_X_Min) & (SpriteX <= Sprite_X_Center)) | ((isWinOnRightEdge) & (SpriteX < Sprite_X_Max) & (SpriteX > Sprite_X_Center+1)))
-	// 								Sprite_X_Motion <= -1;
-	// 								//Sprite_Y_Motion<= 0;
-	// 							// else if(SpriteX == Sprite_X_Center)
-	// 							// 	Sprite_X_Motion <= 0;
-	// 							else 
-	// 								Sprite_X_Motion <= 0;
-	// 						  	end
-	// 				16'h0007 : begin // D
-	// 							if(((isWinOnRightEdge) & (SpriteX < Sprite_X_Max) & (SpriteX >= Sprite_X_Center)) | ((isWinOnLeftEdge) & (SpriteX > Sprite_X_Min) & (SpriteX < (Sprite_X_Center-1))))
-	// 								Sprite_X_Motion <= 1;
-	// 								//Sprite_Y_Motion <= 0;
-	// 							// else if(SpriteX == Sprite_X_Center)
-	// 							// 	Sprite_X_Motion <= 0;
-	// 							else 
-	// 								Sprite_X_Motion <= 0;
-	// 						  	end
-	// 				16'h0016 : begin //S
-	// 							if(((isWinOnBottomEdge) & (SpriteY < Sprite_Y_Max) & (SpriteY >= Sprite_Y_Center)) | ((isWinOnTopEdge) & (SpriteY > Sprite_Y_Min) & (SpriteY < (Sprite_Y_Center-1))))
-	// 								Sprite_Y_Motion <= 1;
-	// 								//Sprite_X_Motion <= 0;
-	// 							else
-	// 								Sprite_Y_Motion <= 0;	
-	// 							end
-	// 				16'h001A : begin //W
-	// 							if(((isWinOnTopEdge) & (SpriteY > Sprite_Y_Min) & (SpriteY <= Sprite_Y_Center)) | ((isWinOnBottomEdge) & (SpriteY < Sprite_Y_Max) & (SpriteY > Sprite_Y_Center+1)))
-	// 								Sprite_Y_Motion <= -1;
-	// 								// 	Sprite_X_Motion <= 0;
-	// 							else 
-	// 								Sprite_Y_Motion <= 0;
-	// 						 	end
-    //         		default: begin
-	// 					Sprite_X_Motion <= 0;
-	// 					Sprite_Y_Motion <= 0;
-	// 				end
-	// 			 endcase
-	// 			end 
-	// 			else if ( (SpriteY) > Sprite_Y_Max )  // Ball is at the bottom edge, BOUNCE!
-	// 			 begin
-	// 				  SpriteY <= Sprite_Y_Max;  // 2's complement.
-	// 				  Sprite_Y_Motion <= 0;
-	// 			  end
-	// 			 else if ( (SpriteY) < Sprite_Y_Min )  // Ball is at the top edge, BOUNCE!
-	// 			 begin
-	// 				  SpriteY <= Sprite_Y_Min;
-	// 				  Sprite_Y_Motion <= 0;
-	// 			  end
-	// 			  else if ( (SpriteX) > Sprite_X_Max )  // Ball is at the Right edge, BOUNCE!
-	// 			  begin
-	// 				  SpriteX <= Sprite_X_Max;  // 2's complement.
-	// 				  Sprite_X_Motion <= 0;
-	// 			  end
-	// 			 else if ( (SpriteX) < Sprite_X_Min )  // Ball is at the Left edge, BOUNCE!
-	// 			 begin
-	// 				  SpriteX <= Sprite_X_Min;
-	// 				  Sprite_X_Motion <= 0;
-	// 			 end
-	// 			 else 
-	// 			 begin
-	// 					Sprite_X_Motion <= 0;
-	// 					Sprite_Y_Motion <= 0;
-	// 			 end
-	// 			 SpriteY <= (SpriteY + Sprite_Y_Motion);  // Update ball position
-	// 			 SpriteX <= (SpriteX + Sprite_X_Motion);
-	// 	end  
-    // end
 
 
 	//drawing on screen
@@ -744,18 +389,6 @@ fpmapfinal_palette map480_palette (
 	.blue  (blue_map)
 );
 
-// battledraft3_rom battledraft_rom (
-// 	.clock   (negedge_vga_clk),
-// 	.address (rom_address),
-// 	.q       (rom_q_battle)
-// );
-
-// battledraft3_palette battledraft_palette (
-// 	.index (rom_q),
-// 	.red   (red_battle),
-// 	.green (green_battle),
-// 	.blue  (blue_battle)
-// );
 
 sprite4dir2_rom spritedraft_rom (
 	.clock   (negedge_vga_clk),
