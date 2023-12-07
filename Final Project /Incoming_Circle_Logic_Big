@@ -3,7 +3,7 @@
 // The output will be the location of the incoming circle (X-Coordinates)
 
 module  incoming_circle ( input logic Reset, frame_clk,
-		                      input logic spawn,
+		          input logic spawn,
                           output logic [9:0]  BallX, BallY, BallS );
 	 
     parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
