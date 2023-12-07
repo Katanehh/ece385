@@ -154,7 +154,7 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-			if (out_of_bounds == 4) // ensures all circles either pressed or missed
+			if (out_of_bounds == 4) // ensures all circles either pressed or missed - Wrong correct this logic
 			begin
                			next_state = finished;
 			end
