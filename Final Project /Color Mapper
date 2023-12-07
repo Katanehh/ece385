@@ -1,0 +1,2 @@
+// This module will define the colors needed to be displayed for each type of shape or sprite selected2
+// This includes the target circle (grey circle), the incoming circles (blue and red circles), the numbers, health line, decimal point (small circle), percentage sign, etc.
