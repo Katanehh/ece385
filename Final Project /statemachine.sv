@@ -1,9 +1,11 @@
-module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
+module statemachine(	input logic Clk, Reset, playerpass,
                         input logic [7:0] keycode,
-		    output logic main, playbackground, fail, success, spawn, [1:0] circletype
+                        output logic main, playbackground, fail, success, spawn, 
+                        output logic [1:0] circletype
                     );
 
-	enum logic [1:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, failscreen1, failscreen2, failscreen3, failscreen4, passscreen} current_state, next_state;
+    enum logic [1:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, 
+                        failscreen, passscreen, finished} current_state, next_state;
 
     always_ff @ (posedge Clk)
     begin
@@ -20,8 +22,8 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
         playbackground = 1'b0;
         fail = 1'b0;
         success = 1'b0;
-	spawn = 1'b0;
-	circletype = 2'b0;
+        spawn = 1'b0;
+        circletype = 2'b00;
 
         unique case (current_state)
             mainscreen:
@@ -41,12 +43,7 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
             begin
                 if (keycode == 8'd20) // let player quit by pressing q
                 begin
-                    next_state = failscreen1;
-                end
-                
-                else if (playerfailed)
-                begin
-                    next_state = failscreen1;
+                    next_state = failscreen;
                 end
                 
                 else if (playerpass)
@@ -56,40 +53,140 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                 
                 else
                 begin
-                    next_state = current_state;
+                    next_state = beat1;
                 end
             end
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		
-            failscreen1:
-			    next_state = failscreen2;
-			
-			failscreen2:
-			    next_state = failscreen3;
-			
-			failscreen3:
-			    next_state = failscreen4;
-			
-			failscreen4:
-			    next_state = mainscreen;
-			
+            
+            beat1:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = buffer1;
+                end
+            end
+            
+            buffer1:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = beat2;
+                end
+            end
+            
+            beat2:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = buffer2;
+                end
+            end
+            
+            buffer2:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = beat3;
+                end
+            end
+            
+            beat3:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = buffer3;
+                end
+            end
+            
+            buffer3:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = beat4;
+                end
+            end
+            
+            beat4:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = buffer4;
+                end
+            end
+            
+            buffer4:
+            begin
+                if (keycode == 8'd20) // let player quit by pressing q
+                begin
+                    next_state = failscreen;
+                end
+                
+                else
+                begin
+                next_state = finished;
+                end
+            end
+            
+            finished:
+            begin
+               if (playerpass == 1)
+               begin
+                    next_state = passscreen;
+               end
+               
+               else if (playerpass == 0)
+               begin
+                    next_state = failscreen;
+               end
+            end
+            
+            failscreen:
+            begin
+                if (keycode == 8'd44) // player presses space to go to main screen
+                begin
+                    next_state = mainscreen;
+                end
+                
+                else
+                begin
+			    next_state = current_state;
+			    end
+            end
+            
 			passscreen:
 			begin
 			    if(keycode == 8'd44) // player presses space to go to main screen
@@ -111,6 +208,8 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                 playbackground = 1'b0;
                 fail = 1'b0;
                 success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
             end
 
             playscreen:
@@ -119,39 +218,110 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                 playbackground = 1'b1;
                 fail = 1'b0;
                 success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
             end
             
-            failscreen1:
+            beat1:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b1;
+                circletype = 2'b00;
+            end
+            
+            buffer1:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
+            end
+            
+            beat2:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b1;
+                circletype = 2'b01;
+            end
+            
+            buffer2:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
+            end
+            
+            beat3:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b1;
+                circletype = 2'b10;
+            end
+            
+            buffer3:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
+            end
+            
+            beat4:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b1;
+                circletype = 2'b11;
+            end
+            
+            buffer4:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
+            end
+            
+            finished:
+            begin
+                main = 1'b0;
+                playbackground = 1'b1;
+                fail = 1'b0;
+                success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
+            end
+            
+            failscreen:
             begin
                 main = 1'b0;
                 playbackground = 1'b0;
                 fail = 1'b1;
                 success = 1'b0;
+                spawn = 1'b0;
+                circletype = 2'b00;
             end
             
-            failscreen2:
-            begin
-                main = 1'b0;
-                playbackground = 1'b0;
-                fail = 1'b1;
-                success = 1'b0;
-            end
-            
-            failscreen3:
-            begin
-                main = 1'b0;
-                playbackground = 1'b0;
-                fail = 1'b1;
-                success = 1'b0;
-            end
-            
-            failscreen4:
-            begin
-                main = 1'b0;
-                playbackground = 1'b0;
-                fail = 1'b1;
-                success = 1'b0;
-            end
             
             passscreen:
             begin
@@ -159,6 +329,8 @@ module statemachine(	input logic Clk, Reset, playerfailed, playerpass,
                 playbackground = 1'b0;
                 fail = 1'b0;
                 success = 1'b1;
+                spawn = 1'b0;
+                circletype = 2'b00;
             end
  
             default ;
