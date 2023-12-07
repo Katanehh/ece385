@@ -1,4 +1,25 @@
-// Top module for game logic
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Zuofu Cheng
+// 
+// Create Date: 12/11/2022 10:48:49 AM
+// Design Name: 
+// Module Name: mb_usb_hdmi_top
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// Top level for mb_lwusb test project, copy mb wrapper here from Verilog and modify
+// to SV
+// Dependencies: microblaze block design
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 module mb_usb_hdmi_top(
     input logic Clk,
@@ -37,6 +58,31 @@ module mb_usb_hdmi_top(
     logic hsync, vsync, vde;
     logic [3:0] red, green, blue;
     logic reset_ah;
+    
+    // incoming circle logic
+    logic spawn;
+    logic circletype;
+    logic color;
+    
+    // target circle logic
+    logic [9:0] targetxsig, targetysig, targetsizesig;
+    
+    // game logic logic
+    logic accuratesig, out_of_bounds_sig;
+    // health bar logic
+    logic [3:0] healthsig;
+    // pass fail logic
+    logic passsig;
+    
+    // statemachine logic
+    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig;
+    logic [1:0] circlesig;
+    
+    // logic for all sprite outputs
+    logic [3:0] bckr, bckg, bckb;
+    logic [3:0] failr, failg, failb;
+    logic [3:0] successr, successg, successb;
+    logic [3:0] mainr, maing, mainb;
     
     assign reset_ah = reset_rtl_0;
     
@@ -123,26 +169,135 @@ module mb_usb_hdmi_top(
     );
 
     
-    //Ball Module
-    ball ball_instance(
+    //circle Module
+    Incoming_Circle incoming_instance(
         .Reset(reset_ah),
         .frame_clk(vsync),                    //Figure out what this should be so that the ball will move
-        .keycode(keycode0_gpio[7:0]),    //Notice: only one keycode connected to ball by default
+        .spawn(spawn),    
+        .playbackground(playbackgroundsig),
+        .circletype(circlesig),
         .BallX(ballxsig),
         .BallY(ballysig),
-        .BallS(ballsizesig)
+        .BallS(ballsizesig),
+        .color(color)
+    );
+    
+    //target module
+    target_circle target_intance(
+        .Reset(reset_ah),
+        .frame_clk(vsync),
+        .TargetX(targetxsig),
+        .TargetY(targetysig),
+        .TargetS(targetsizesig)
     );
     
     //Color Mapper Module   
     color_mapper color_instance(
         .BallX(ballxsig),
         .BallY(ballysig),
+        .TargetX(targetxsig),
+        .TargetY(targetysig),
+        .TargetS(targetsizesig),
         .DrawX(drawX),
         .DrawY(drawY),
         .Ball_size(ballsizesig),
+        .out_of_bounds(out_of_bounds_sig),
+        .bckr(bckr),
+        .bckg(bckg),
+        .bckb(bckb),
+        .failr(failr),
+        .failg(failg),
+        .failb(failb),
+        .mainr(mainr),
+        .maing(maing),
+        .mainb(mainb),
+        .successr(successr),
+        .successg(successg),
+        .successb(successb),
+        .main(mainsig),
+        .playbackground(playbackgroundsig),
+        .fail(failsig),
+        .success(sucesssig),
+        .spawn(spawnsig),
         .Red(red),
         .Green(green),
         .Blue(blue)
+    );
+    
+    Game_Logic logic_instance(
+        .Reset(reset_ah),
+        .frame_clk(vsync),
+        .circletype(circlesig),
+        .keycode(keycode0_gpio[7:0]),
+        .BallX(ballxsig),
+        .BallS(ballsizesig),
+        .accurate(accuratesig),
+        .out_of_bounds(out_of_bounds_sig)
+    );
+    
+    Health_Bar health_instance(
+        .Clk(vsync),
+        .hit_accurate(accuratesig),
+        .health(healthsig)
+    );
+    
+//    pass_fail pass_instance(
+//        .Clk(vsync),
+//        .health(healthsig),
+//        .pass(passsig)
+//    );
+    
+    statemachine state_instance(
+        .Clk(clk_25MHz),
+        .Reset(reset_ah),
+        .health(healthsig),
+        .keycode(keycode0_gpio[7:0]),
+        .main(mainsig),
+        .playbackground(playbackgroundsig),
+        .fail(failsig),
+        .success(sucesssig),
+        .spawn(spawnsig),
+        .circletype(circlesig)
+    );
+   
+    bck_example bck_instance(
+        .vga_clk(clk_25MHz),
+        .DrawX(drawX),
+        .DrawY(drawY),
+        .blank(vde),
+        .red(bckr),
+        .green(bckg),
+        .blue(bckb)
+    );
+    
+    fail_example fail_instance(
+        .vga_clk(clk_25MHz),
+        .DrawX(drawX),
+        .DrawY(drawY),
+        .blank(vde),
+        .red(failr),
+        .green(failg),
+        .blue(failb)
+    );
+    
+    pass_example success_instance(
+        .vga_clk(clk_25MHz),
+        .DrawX(drawX),
+        .DrawY(drawY),
+        .blank(vde),
+        .red(successr),
+        .green(successg),
+        .blue(successb)
+    );
+    
+    main_example main_instance(
+        .vga_clk(clk_25MHz),
+        .DrawX(drawX),
+        .DrawY(drawY),
+        .blank(vde),
+        .red(mainr),
+        .green(maing),
+        .blue(mainb)
     );
     
 endmodule
