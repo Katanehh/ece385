@@ -6,7 +6,7 @@
 
 module combocounter (
 
-input clk,
+input logic Clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
 output logic combo // This variable determines the user's combo or streak which will be reflected as a sprite (on the left of the screen)
 
@@ -14,7 +14,7 @@ output logic combo // This variable determines the user's combo or streak which 
 
 logic streak_counter = 0;
 
-always_ff@(posedge clk)
+always_ff@(posedge Clk)
 begin
         if (hit_accurate == 1)
         begin
