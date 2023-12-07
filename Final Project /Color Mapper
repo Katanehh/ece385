@@ -1,5 +1,3 @@
-// This module will define the colors needed to be displayed for each type of shape or sprite selected2
-// This includes the target circle (grey circle), the incoming circles (blue and red circles), the numbers, health line, decimal point (small circle), percentage sign, etc.
 //-------------------------------------------------------------------------
 //    Color_Mapper.sv                                                    --
 //    Stephen Kempf                                                      --
@@ -17,8 +15,13 @@
 
 
 module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size, TargetX, TargetY, TargetS,
-                       input logic color, out_of_bounds,
+                       input logic color,
+                       input logic out_of_bounds,
+                       input logic main, playbackground, fail, success, spawn,
                        input logic [3:0] bckr, bckg, bckb,
+                       logic [3:0] failr, failg, failb,
+                       logic [3:0] successr, successg, successb,
+                       logic [3:0] mainr, maing, mainb,
                        output logic [3:0]  Red, Green, Blue );
     
     logic ball_on;
@@ -37,19 +40,20 @@ module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
     always_comb
     begin: Ball_on_proc
         if ( (DistX*DistX + DistY*DistY) <= (Size * Size) )
-	begin
-		if (out_of_bounds == 1)
-		begin
-			ball_on = 1'b0;
-		end
+    begin
+        if (out_of_bounds == 1)
+        begin
+            ball_on = 1'b0;
+        end
 
-		else
-           		 ball_on = 1'b1;
-	end
+        else
+            ball_on = 1'b1;
+    end
         else 
             ball_on = 1'b0;
      end 
-           
+      
+     
     always_comb
     begin: Target_on_proc
         if ( (TDistX*TDistX + TDistY*TDistY) <= (TSize * TSize) )
@@ -60,28 +64,54 @@ module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
      
     always_comb
     begin:RGB_Display
-        if ((ball_on == 1'b1 && color == 1'b0)) begin // blue circle
+        if ((ball_on == 1'b1 && color == 1'b0 && spawn == 1'b1)) begin // blue circle
             Red = 4'h0;
             Green = 4'h0;
             Blue = 4'hf;
         end       
         
-        else if ((ball_on == 1'b1 && color == 1'b1)) begin 
+        else if ((ball_on == 1'b1 && color == 1'b1 && spawn == 1'b1)) begin 
             Red = 4'hf;
             Green = 4'h0;
             Blue = 4'h0;
         end 
         
-        else if ((Target_on == 1'b1)) begin
+        else if ((Target_on == 1'b1 && spawn == 1'b1)) begin
             Red = 4'hf;
             Green = 4'hf;
             Blue = 4'h0;
         end
         
         else begin 
-            Red = bckr; 
-            Green = bckg;
-            Blue = bckb;
+            if (main == 1'b1)begin
+                Red = mainr; 
+                Green = maing;
+                Blue = mainb;
+            end
+            
+            else if (fail == 1'b1)begin
+                Red = failr; 
+                Green = failg;
+                Blue = failb;
+            end
+            
+            else if (playbackground == 1'b1)begin
+                Red = bckr; 
+                Green = bckg;
+                Blue = bckb;
+            end
+            
+            else if (success == 1'b1)begin
+                Red = successr; 
+                Green = successg;
+                Blue = successb;
+            end
+            
+            else begin
+                Red = 4'h0;
+                Green = 4'h0;
+                Blue = 4'h0;
+            end
         end      
     end 
     
