@@ -3,7 +3,7 @@
 // Output will be whether or not the user hits accurately 'accurate'
 
 module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type determines the color and size of the incoming circle - 0, 1 is blue, 2, 3 is red (0 is small blue, 1 is big blue) (2 is small red, 3 is big red)
-		     input logic [7:0] keycode, [9:0] BallX
+		     input logic [7:0] keycode, [9:0] BallX, [9:0] BallS,
                      output logic accurate, out_of_bounds ); // output signal accurate determines that the user input is timed correctly with incoming circle, out_of_bounds defines the incoming circle being already outside the user's target circle (miss) (this signal will inform color mapper to stop displaying it on the screen)
 	 
     parameter [9:0] Ball_Target_X = 50; // Target Circle on X axis
@@ -27,13 +27,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h1D : begin // Z
                         			  if (circletype == 0)  // Ball is blue (small)
 					           begin
-					        	if ((BallX < 16 + Ball_Target_X) || (BallX > Ball_Target_X))
+					        	if ((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
