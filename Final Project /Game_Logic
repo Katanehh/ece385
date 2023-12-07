@@ -2,9 +2,12 @@
 // Input will be the keyboard inputs, Position of the ball (X-coordinate), and clock
 // Output will be whether or not the user hits accurately 'accurate'
 
-module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type determines the color and size of the incoming circle - 0, 1 is blue, 2, 3 is red (0 is small blue, 1 is big blue) (2 is small red, 3 is big red)
-		     input logic [7:0] keycode, [9:0] BallX, [9:0] BallS,
-                     output logic accurate, out_of_bounds ); // output signal accurate determines that the user input is timed correctly with incoming circle, out_of_bounds defines the incoming circle being already outside the user's target circle (miss) (this signal will inform color mapper to stop displaying it on the screen)
+module  Game_Logic ( input logic Reset, frame_clk, 
+                     input logic [1:0] circletype, // type determines the color and size of the incoming circle - 0, 1 is blue, 2, 3 is red (0 is small blue, 1 is big blue) (2 is small red, 3 is big red)
+		             input logic [7:0] keycode, 
+		             input logic [9:0] BallX, BallS,
+                     output logic accurate, 
+                     output logic out_of_bounds ); // output signal accurate determines that the user input is timed correctly with incoming circle, out_of_bounds defines the incoming circle being already outside the user's target circle (miss) (this signal will inform color mapper to stop displaying it on the screen)
 	 
     parameter [9:0] Ball_Target_X = 50; // Target Circle on X axis
     parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
@@ -19,145 +22,145 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
         begin 
 			yes = yes; // we don't care
         end
-
-	else if (BallX + BallS < Ball_Target_X - 8)
-	begin
-		accurate = 0;
-		out_of_bounds = 1;
-	end 
-
+        
+        else if (BallX + BallS < Ball_Target_X - 8)
+        begin
+            accurate = 0;
+            out_of_bounds = 1;
+        end 
+        
         else 
         begin 				  
 				 //modify to control circle input with the keycode
 				unique case (keycode)
 					8'h1D : begin // Z
-                        			  if (circletype == 0)  // Ball is blue (small)
+                        			  if (circletype == 2'd0)  // Ball is blue (small)
 					           begin
 					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
 					        
 					8'h1B : begin // X
-						  if (circletype == 0)  // Ball is blue (small)
+						  if (circletype == 2'd0)  // Ball is blue (small)
 					           begin
 					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
 
 					8'h1D && 8'h1B : begin // Z and X
-						  if (circletype == 1)  // Ball is blue (big)
+						  if (circletype == 2'd1)  // Ball is blue (big)
 					           begin
 					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
 
 					8'h06 : begin // C
-                        			 if (circletype == 2)  // Ball is red (small)
+                        			 if (circletype == 2'd2)  // Ball is red (small)
 					           begin
 					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
 							  
 					8'h19 : begin // V
-					   if (circletype == 2)  // Ball is red (small)
+					   if (circletype == 2'd2)  // Ball is red (small)
 					           begin
 					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
 
 					8'h06 && 8'h19 : begin // C and V
-						  if (circletype == 3)  // Ball is red (big)
+						  if (circletype == 2'd3)  // Ball is red (big)
 					           begin
-					        	if (((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
 								begin
-									accurate = 1;
-									out_of_bounds = 1;
+									accurate = 1'd1;
+									out_of_bounds = 1'd1;
 								end
 					          
 							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
-									accurate = 0;
-									out_of_bounds = 1;
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-									accurate = 0;
-									out_of_bounds = 0;
+									accurate = 1'd0;
+									out_of_bounds = 1'd0;
 							    	end
 						   end
 						end
