@@ -6,7 +6,7 @@
 
 module accuracy_percentage (
 
-input clk,
+input logic Clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate)
 input logic hit_miss, // This variable determines if the user misses the map timing (1 = miss)
 output logic [4:0] percentage // This variable determines the user's accuracy percentage which will be reflected as a sprite (5 digits)
@@ -20,7 +20,7 @@ logic accuracy_gain = 100; // This variable stores the value of accuracy gained 
 logic precision_integer = 0; // This variable stores the integer value of the accuracy percentage
 logic i;
 
-always_ff@(posedge clk)
+always_ff@(posedge Clk)
 begin
         if (hit_accurate == 1)
         begin
