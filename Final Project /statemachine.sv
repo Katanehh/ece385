@@ -4,7 +4,7 @@ module statemachine(	input logic Clk, Reset, playerpass,
                         output logic [1:0] circletype
                     );
 
-    enum logic [1:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, 
+    enum logic [3:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, 
                         failscreen, passscreen, finished} current_state, next_state;
 
     always_ff @ (posedge Clk)
