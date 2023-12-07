@@ -5,7 +5,7 @@
 
 module healthbar (
 
-input clk,
+input logic Clk,
 input logic hit_accurate, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
 output logic health // This variable determines the user's health which will be reflected as a sprite (A Line or a Straight Bar on the top of the screen)
 
@@ -13,7 +13,7 @@ output logic health // This variable determines the user's health which will be 
 
 logic health_counter = 0;
 
-always_ff@(posedge clk)
+always_ff@(posedge Clk)
 begin
         if (hit_accurate == 1)
         begin
