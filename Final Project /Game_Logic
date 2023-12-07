@@ -49,13 +49,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h1B : begin // X
 						  if (circletype == 0)  // Ball is blue (small)
 					           begin
-					        	if (BallX == Ball_Target_X)
+					        	if ((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
@@ -71,13 +71,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h1D && 8'h1B : begin // Z and X
 						  if (circletype == 1)  // Ball is blue (big)
 					           begin
-					        	if (BallX == Ball_Target_X)
+					        	if ((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
@@ -93,13 +93,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h06 : begin // C
                         			 if (circletype == 2)  // Ball is red (small)
 					           begin
-					        	if (BallX == Ball_Target_X)
+					        	if ((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
@@ -115,13 +115,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h19 : begin // V
 					   if (circletype == 2)  // Ball is red (small)
 					           begin
-					        	if (BallX == Ball_Target_X)
+					        	if ((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
@@ -137,13 +137,13 @@ module  game_logic ( input logic Reset, frame_clk, [1:0] circletype, // type det
 					8'h06 && 8'h19 : begin // C and V
 						  if (circletype == 3)  // Ball is red (big)
 					           begin
-					        	if (BallX == Ball_Target_X)
+					        	if (((BallX - BallS < 8 + Ball_Target_X) || (BallX + BallS > Ball_Target_X - 8))
 								begin
 									accurate = 1;
 									out_of_bounds = 1;
 								end
 					          
-							else if (BallX < Ball_Target_X)
+							else if (BallX + BallS < Ball_Target_X - 8)
 								begin
 									accurate = 0;
 									out_of_bounds = 1;
