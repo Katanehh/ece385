@@ -21,7 +21,7 @@ begin
         streak_counter = streak_counter + 1;
         end
 
-        elseif (hit_accurate == 0)
+        else if (hit_accurate == 0)
         begin
         streak_counter = 0;
         end
