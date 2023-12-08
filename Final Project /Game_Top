@@ -61,7 +61,7 @@ module mb_usb_hdmi_top(
     
     // incoming circle logic
     logic spawn;
-    logic circletype;
+    //logic [1:0] circletype;
     logic color;
     
     // target circle logic
@@ -75,8 +75,9 @@ module mb_usb_hdmi_top(
     logic passsig;
     
     // statemachine logic
-    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig, clk_outsig;
+    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig, clk_outsig, noprintsig;
     logic [1:0] circlesig;
+    logic [2:0] countersig;
     
     // logic for all sprite outputs
     logic [3:0] bckr, bckg, bckb;
@@ -195,6 +196,9 @@ module mb_usb_hdmi_top(
     color_mapper color_instance(
         .BallX(ballxsig),
         .BallY(ballysig),
+        .Reset(reset_ah),
+        .frame_clk(vsync),
+        .BallCounter(countersig),
         .TargetX(targetxsig),
         .TargetY(targetysig),
         .TargetS(targetsizesig),
@@ -237,6 +241,7 @@ module mb_usb_hdmi_top(
     
     Health_Bar health_instance(
         .Clk(vsync),
+        .Reset(reset_ah),
         .hit_accurate(accuratesig),
         .health(healthsig)
     );
@@ -248,10 +253,11 @@ module mb_usb_hdmi_top(
 //    );
     
     statemachine state_instance(
-        .Clk(clk_outsig),
+        .Clk(vsync),
         .Reset(reset_ah),
-        //.out_of_bounds(out_of_bounds_sig),
+        .out_of_bounds(out_of_bounds_sig),
         .health(healthsig),
+        .counter(countersig),
         .keycode(keycode0_gpio[7:0]),
         .main(mainsig),
         .playbackground(playbackgroundsig),
@@ -306,5 +312,20 @@ module mb_usb_hdmi_top(
         .reset(reset_ah),
         .clk_out(clk_outsig)
     );
+    
+//    boundscheck bound_instance(
+//        .Reset(reset_ah),
+//        .frame_clk(vsync),
+//        .out_of_bounds(out_of_bounds_sig),
+//        .spawn(spawnsig),
+//        .noprint(noprintsig)
+//    );
+    
+//    circlecounter counter_instance(
+//        .Clk(clk_25MHz),
+//        .Reset(reset_ah),
+//        .spawn(spawnsig),
+//        .circlectr(countersig)
+//    );
     
 endmodule
