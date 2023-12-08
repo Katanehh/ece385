@@ -1,0 +1,122 @@
+module testbench(); 
+
+timeunit 10ns; // amount of time represented by #1
+timeprecision 1ns;
+
+logic Clk, reset_rt1_0,; // input and output from multiplier. signals are local because multiplier will be instantiated as a submodule here
+logic spawn, 
+logic [2:0] circletype,
+logic clk_25MHz, clk_125MHz, clk, clk_100MHz;
+logic locked;
+logic [9:0] drawX, drawY, ballxsig, ballysig, ballsizesig;
+logic hsync, vsync, vde;
+
+ //USB signals
+logic [0:0] gpio_usb_int_tri_i,
+logic gpio_usb_rst_tri_o,
+logic usb_spi_miso,
+logic usb_spi_mosi,
+logic usb_spi_sclk,
+logic usb_spi_ss,
+    
+    //UART
+logic uart_rtl_0_rxd,
+logic uart_rtl_0_txd,
+    
+    //HDMI
+logic hdmi_tmds_clk_n,
+logic hdmi_tmds_clk_p,
+logic [2:0]hdmi_tmds_data_n,
+logic [2:0]hdmi_tmds_data_p,
+        
+    //HEX displays
+logic [7:0] hex_segA,
+logic [3:0] hex_gridA,
+logic [7:0] hex_segB,
+logic [3:0] hex_gridB
+    
+    logic [31:0] keycode0_gpio, keycode1_gpio;
+    logic clk_25MHz, clk_125MHz, clk, clk_100MHz;
+    logic locked;
+    logic [9:0] drawX, drawY, ballxsig, ballysig, ballsizesig;
+
+    logic hsync, vsync, vde;
+    logic [3:0] red, green, blue;
+    logic reset_ah;
+    
+    // incoming circle logic
+    logic spawn;
+    logic circletype;
+    logic color;
+    
+    // target circle logic
+    logic [9:0] targetxsig, targetysig, targetsizesig;
+    
+    // game logic logic
+    logic accuratesig, out_of_bounds_sig;
+    // health bar logic
+    logic [3:0] healthsig;
+    // pass fail logic
+    logic passsig;
+    
+    // statemachine logic
+    logic mainsig, playbackgroundsig, failsig, sucesssig, spawnsig, clk_outsig;
+    logic [1:0] circlesig;
+    
+    // logic for all sprite outputs
+    logic [3:0] bckr, bckg, bckb;
+    logic [3:0] failr, failg, failb;
+    logic [3:0] successr, successg, successb;
+    logic [3:0] mainr, maing, mainb;
+
+clk_wiz_0 clk_wiz (.*);
+vga_controller vga (.*);
+hdmi_tx_0 vga_to_hdmi (.*);
+Incoming_Circle incoming_instance(.*);
+target_circle target_intance(.*);
+color_mapper color_instance(.*);
+Game_Logic logic_instance(.*);
+Health_Bar health_instance(.*);
+statemachine state_instance(.*);
+bck_example bck_instance(.*);
+fail_example fail_instance(.*);
+pass_example success_instance(.*);
+main_example main_instance(.*);
+clock_divider divider_instance(.*);
+
+// assign reset_ah = reset_rtl_0; 
+
+// idk if we need this
+mb_block mb_block_i(.*);
+HexDriver HexB (.*);
+HexDriver HexA (.*);
+
+always begin : CLOCK_GENERATION
+#1 Clk = ~Clk; // wait for a delay of 1 timeunit
+end
+
+initial begin: CLOCK_INITIALIZATION
+    Clk = 0;
+end
+
+// This is the testing now:
+
+initial begin: TEST_VECTORS
+spawn = ;
+circletype = ;
+
+
+
+#2 Reset = 1;
+#2 Run = 1;
+
+#10
+Continue = 0;
+
+#4 Continue = 1;
+SW = 16'd0000000000000002;
+
+#5 Continue = 0;
+
+end
+endmodule
