@@ -1,0 +1,40 @@
+module boundscheck (
+                input logic out_of_bounds,
+                input logic spawn,
+                output logic noprint );
+
+logic [3:0] boundsctr;
+assign boundsctr = 0;
+
+always_ff @ (posedge frame_clk or posedge Reset)
+begin: bound_check
+if (out_of_bounds == 1)
+begin
+  boundsctr = boundsctr + 1;
+end
+
+elseif (out_of_bounds == 0)
+begin
+  boundsctr = boundsctr;
+end
+
+elseif (spawn == 1) // new beat, refresh
+begin
+  boundsctr = 0;
+end
+
+else // spawn == 0, buffer state
+  boundsctr = boundsctr;
+end
+
+always_comb
+begin: no_print
+
+if (boundsctr != 0)
+  noprint = 1; // dont print circle
+
+else
+  noprint = 0; // print circle
+end
+
+endmodule
