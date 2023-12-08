@@ -165,7 +165,11 @@ module  Game_Logic ( input logic Reset, frame_clk,
 						   end
 						end
 
-					default: ;
+					default: 
+					begin
+					out_of_bounds = 1'd0;
+					accurate = 1'd0;
+					end
 			   endcase
 			
 		end  
