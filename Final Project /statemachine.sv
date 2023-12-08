@@ -6,7 +6,7 @@ module statemachine(	input logic Clk, Reset,
                         output logic [1:0] circletype
                     );
 
-    enum logic [3:0] {  mainscreen, playscreen, beat1, beat2, beat3, beat4, buffer1, buffer2, buffer3, buffer4, 
+	enum logic [3:0] {  mainscreen, playscreen, smolblue, smolred, bigblue, bigred, buffer1, buffer2, buffer3, buffer4, 
                         failscreen, passscreen, finished} current_state, next_state;
 
     always_ff @ (posedge Clk)
@@ -47,14 +47,41 @@ module statemachine(	input logic Clk, Reset,
                 begin
                     next_state = failscreen;
                 end
-                
+
+		// NEW LOGIC
+		    else if (circles_made == 5) // FAKE COUNTER WE HAVEN'T MADE YET
+			begin
+				next_state = finished;
+			end
+
+		    
+		else if (keycode == 8'h1D) // Z
+		begin
+			next_state = smolblue;
+		end
+
+		else if (keycode == 8'h1B) // X
+		begin
+			next_state = bigblue;
+		end
+
+		else if (keycode == 8'h06) // C
+		begin
+			next_state = smolred;
+		end
+
+		else if (keycode == 8'h19) // V
+		begin
+			next_state = bigred;
+		end
+					    
                 else
                 begin
-                    next_state = beat1;
+                    next_state = current_state;
                 end
             end
             
-            beat1:
+            smolblue:
             begin
                 if (keycode == 8'd20) // let player quit by pressing q
                 begin
@@ -63,7 +90,7 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-                next_state = buffer1;
+               		next_state = buffer1;
                 end
             end
             
@@ -78,7 +105,7 @@ module statemachine(	input logic Clk, Reset,
                 begin
 			if (out_of_bounds == 1'd1) 
 			begin
-				next_state = beat2;
+				next_state = playscreen;
 			end
 
 			else
@@ -88,7 +115,7 @@ module statemachine(	input logic Clk, Reset,
                 end
             end
             
-            beat2:
+            bigblue:
             begin
                 if (keycode == 8'd20) // let player quit by pressing q
                 begin
@@ -110,11 +137,19 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-                next_state = beat3;
+               if (out_of_bounds == 1'd1) 
+			begin
+				next_state = playscreen;
+			end
+
+			else
+			begin
+				next_state = current_state;
+			end
                 end
             end
             
-            beat3:
+            smolred:
             begin
                 if (keycode == 8'd20) // let player quit by pressing q
                 begin
@@ -136,11 +171,19 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-                next_state = beat4;
+               if (out_of_bounds == 1'd1) 
+			begin
+				next_state = playscreen;
+			end
+
+			else
+			begin
+				next_state = current_state;
+			end
                 end
             end
             
-            beat4:
+            bigred:
             begin
                 if (keycode == 8'd20) // let player quit by pressing q
                 begin
@@ -160,17 +203,18 @@ module statemachine(	input logic Clk, Reset,
                     next_state = failscreen;
                 end
                 
-//                else
-//                begin
-//			if (out_of_bounds == 4) // ensures all circles either pressed or missed
-//			begin
-//               			next_state = finished;
-//			end
+		 else
+                begin
+               if (out_of_bounds == 1'd1) 
+			begin
+				next_state = playscreen;
+			end
 
-			     else
-                 begin
-                    next_state = finished;
-                 end
+			else
+			begin
+				next_state = current_state;
+			end
+                end
             end
             
             finished:
@@ -234,7 +278,7 @@ module statemachine(	input logic Clk, Reset,
                 circletype = 2'b00;
             end
             
-            beat1:
+            smolblue:
             begin
                 main = 1'b0;
                 playbackground = 1'b1;
@@ -254,7 +298,7 @@ module statemachine(	input logic Clk, Reset,
                 circletype = 2'b00;
             end
             
-            beat2:
+            bigblue:
             begin
                 main = 1'b0;
                 playbackground = 1'b1;
@@ -274,7 +318,7 @@ module statemachine(	input logic Clk, Reset,
                 circletype = 2'b00;
             end
             
-            beat3:
+            smolred:
             begin
                 main = 1'b0;
                 playbackground = 1'b1;
@@ -294,7 +338,7 @@ module statemachine(	input logic Clk, Reset,
                 circletype = 2'b00;
             end
             
-            beat4:
+            bigred:
             begin
                 main = 1'b0;
                 playbackground = 1'b1;
