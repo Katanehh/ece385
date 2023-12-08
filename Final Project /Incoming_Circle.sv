@@ -69,6 +69,18 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
                     balls <= balls - 1'd1;	
                     BallX <= balls;
             end	 
+
+		// else if (playbackground == 1'd1 && spawn == 1'd0)
+		// begin
+		// 	if (BallX != Ball_X_Max)
+		// 	begin
+		//	balls <= balls - 1'd1;
+		//	BallX <= balls;
+		//	end
+		// end
+
+		// else
+		// BallX <= Ball_X_Max;
         end
     end
       
