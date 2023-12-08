@@ -64,19 +64,19 @@ module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
      
     always_comb
     begin:RGB_Display
-        if ((ball_on == 1'b1 && color == 1'b0 && spawn == 1'b1)) begin // blue circle
+        if ((ball_on == 1'b1 && color == 1'b0 && spawn == 1'b1 && playbackground == 1'b1) || (ball_on == 1'b1 && color == 1'b0 && spawn == 1'b0 && playbackground == 1'b1)) begin // blue circle
             Red = 4'h0;
             Green = 4'h0;
             Blue = 4'hf;
         end       
         
-        else if ((ball_on == 1'b1 && color == 1'b1 && spawn == 1'b1)) begin 
+        else if ((ball_on == 1'b1 && color == 1'b1 && spawn == 1'b1 && playbackground == 1'b1) || (ball_on == 1'b1 && color == 1'b1 && spawn == 1'b0 && playbackground == 1'b1)) begin  // red circle
             Red = 4'hf;
             Green = 4'h0;
             Blue = 4'h0;
         end 
         
-        else if ((Target_on == 1'b1 && spawn == 1'b1)) begin
+        else if ((Target_on == 1'b1 && spawn == 1'b1 && playbackground == 1'b1) || (Target_on == 1'b1 && spawn == 1'b0 && playbackground == 1'b1)) begin // yellow target circle
             Red = 4'hf;
             Green = 4'hf;
             Blue = 4'h0;
