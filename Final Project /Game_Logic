@@ -32,11 +32,11 @@ module  Game_Logic ( input logic Reset, frame_clk,
         
         else 
         begin 		
-		if ((BallX - BallS > Ball_Target_X + 8)) // ignores any user input as long as incoming circle isn't at target circle (might want to put extra logic here for accuracy percentage)
-		begin
-			accurate = 0;
-			out_of_bounds = 0;
-		end
+		//if ((BallX - BallS > Ball_Target_X + 8)) // ignores any user input as long as incoming circle isn't at target circle (might want to put extra logic here for accuracy percentage)
+		//begin
+		//	accurate = 0;
+		//	out_of_bounds = 0;
+		//end
 				 //modify to control circle input with the keycode
 				unique case (keycode)
 					8'h1D : begin // Z
