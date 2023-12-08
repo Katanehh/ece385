@@ -76,8 +76,15 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-			if (out_of_bounds == 1) begin
-				next_state = beat2; end
+			if (out_of_bounds == 1) 
+			begin
+				next_state = beat2;
+			end
+
+			else
+			begin
+				next_state = current_state;
+			end
                 end
             end
             
