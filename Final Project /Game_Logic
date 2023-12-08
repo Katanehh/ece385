@@ -24,7 +24,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 			// accurate = 0;
         end
         
-        else if (BallX + BallS < Ball_Target_X - 8)
+        else if (BallX + BallS < Ball_Target_X - 12)
         begin
             accurate = 0;
             out_of_bounds = 1;
@@ -32,7 +32,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
         
         else 
         begin 		
-		//if ((BallX - BallS > Ball_Target_X + 8)) // ignores any user input as long as incoming circle isn't at target circle (might want to put extra logic here for accuracy percentage)
+		//if ((BallX - BallS > Ball_Target_X + 12)) // ignores any user input as long as incoming circle isn't at target circle (might want to put extra logic here for accuracy percentage)
 		//begin
 		//	out_of_bounds = 0;
 		//end
@@ -41,7 +41,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h1D : begin // Z
                         			  if (circletype == 2'd0)  // Ball is blue (small)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
@@ -63,7 +63,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h1B : begin // X
 						  if (circletype == 2'd0)  // Ball is blue (small)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
@@ -85,7 +85,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h1D && 8'h1B : begin // Z and X
 						  if (circletype == 2'd1)  // Ball is blue (big)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
@@ -107,7 +107,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h06 : begin // C
                         			 if (circletype == 2'd2)  // Ball is red (small)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
@@ -129,7 +129,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h19 : begin // V
 					   if (circletype == 2'd2)  // Ball is red (small)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
@@ -151,7 +151,7 @@ module  Game_Logic ( input logic Reset, frame_clk,
 					8'h06 && 8'h19 : begin // C and V
 						  if (circletype == 2'd3)  // Ball is red (big)
 					           begin
-					        	if ((BallX - BallS < 8 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 8))
+					        	if ((BallX - BallS < 12 + Ball_Target_X) && (BallX + BallS > Ball_Target_X - 12))
 								begin
 									accurate = 1'd1;
 									out_of_bounds = 1'd1;
