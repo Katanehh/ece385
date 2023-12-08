@@ -1,0 +1,29 @@
+module circlecounter (
+
+input logic Clk,
+input logic spawn, // This variable determines if the user accurately hits the map timing (1 = accurate) (0 = miss)
+output logic [2:0] circlectr // This variable determines the user's combo or streak which will be reflected as a sprite (on the left of the screen)
+
+);
+
+logic [2:0] circle_counter;
+
+assign circle_counter = 0;
+
+always_ff@(posedge Clk)
+begin
+        if (spawn == 1'd1)
+        begin
+        circle_counter = circle_counter + 1'd1;
+        end
+
+        else
+        circle_counter = circle_counter;
+end
+
+always_comb
+begin
+        circlectr = circle_counter;
+end
+
+endmodule
