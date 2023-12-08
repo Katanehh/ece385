@@ -1,5 +1,5 @@
 module statemachine(	input logic Clk, Reset,
-		    	        //input logic out_of_bounds,
+		     	input logic out_of_bounds,
                         input logic [3:0] health,
                         input logic [7:0] keycode,
                         output logic main, playbackground, fail, success, spawn, 
@@ -76,7 +76,8 @@ module statemachine(	input logic Clk, Reset,
                 
                 else
                 begin
-                next_state = beat2;
+			if (out_of_bounds == 1) begin
+				next_state = beat2; end
                 end
             end
             
