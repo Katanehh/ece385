@@ -20,7 +20,8 @@ module  Game_Logic ( input logic Reset, frame_clk,
     begin: Move_Ball
         if (Reset)  // asynchronous Reset
         begin 
-			yes = yes; // we don't care
+			out_of_bounds = 0; // we don't care
+			accurate = 0;
         end
         
         else if (BallX + BallS < Ball_Target_X - 8)
