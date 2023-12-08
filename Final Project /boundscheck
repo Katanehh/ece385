@@ -38,3 +38,14 @@ else
 end
 
 endmodule
+
+// Connect inputs from game_logic so that it stores out_of_bounds and waits until new ball spawns. Once out of bounds is 1, it will stay 1 until spawn refreshes
+// In color mapper: ball_on_proc always_comb,
+// add else if (noprint == 1) begin 
+// ball_on = 1'b0;
+// end
+//
+// add else if (noprint == 0) begin
+// ball_on = 1'b1;
+// end
+// Potentially, remove out_of_bounds from the module and just use input logic noprint (HARD POTENTIALLY)
