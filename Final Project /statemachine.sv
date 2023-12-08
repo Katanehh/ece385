@@ -5,9 +5,10 @@ module statemachine(	input logic Clk, Reset,
                         output logic main, playbackground, fail, success, spawn, 
                         output logic [1:0] circletype
                     );
-
+	logic [2:0] counter;
 	enum logic [3:0] {  mainscreen, playscreen, smolblue, smolred, bigblue, bigred, buffer1, buffer2, buffer3, buffer4, 
-                        failscreen, passscreen, finished} current_state, next_state;
+                        failscreen, passscreen, finished, count} current_state, next_state;
+	assign counter = 0;
 
     always_ff @ (posedge Clk)
     begin
@@ -49,7 +50,7 @@ module statemachine(	input logic Clk, Reset,
                 end
 
 		// NEW LOGIC
-		    else if (circles_made == 5) // FAKE COUNTER WE HAVEN'T MADE YET
+		    else if (counter == 5) // FAKE COUNTER WE HAVEN'T MADE YET
 			begin
 				next_state = finished;
 			end
@@ -105,7 +106,7 @@ module statemachine(	input logic Clk, Reset,
                 begin
 			if (out_of_bounds == 1'd1) 
 			begin
-				next_state = playscreen;
+				next_state = count;
 			end
 
 			else
@@ -139,7 +140,7 @@ module statemachine(	input logic Clk, Reset,
                 begin
                if (out_of_bounds == 1'd1) 
 			begin
-				next_state = playscreen;
+				next_state = count;
 			end
 
 			else
@@ -173,7 +174,7 @@ module statemachine(	input logic Clk, Reset,
                 begin
                if (out_of_bounds == 1'd1) 
 			begin
-				next_state = playscreen;
+				next_state = count;
 			end
 
 			else
@@ -207,7 +208,7 @@ module statemachine(	input logic Clk, Reset,
                 begin
                if (out_of_bounds == 1'd1) 
 			begin
-				next_state = playscreen;
+				next_state = count;
 			end
 
 			else
@@ -216,10 +217,16 @@ module statemachine(	input logic Clk, Reset,
 			end
                 end
             end
-            
+
+	    count:
+	    begin
+		counter <= counter + 1;
+		next_state = playscreen;
+	    end
+	    
             finished:
             begin
-               if (health >= 3'd2)
+		    if (counter >= 3'd2)
                begin
                     next_state = passscreen;
                end
