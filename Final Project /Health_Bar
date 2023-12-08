@@ -17,14 +17,9 @@ assign health_counter = 0;
 
 always_ff@(posedge Clk)
 begin
-        if (hit_accurate == 1'd1)
+        if (hit_accurate)
         begin
         health_counter = health_counter + 1'd1;
-        end
-
-        else
-        begin
-        health_counter = health_counter;
         end
 end
 
