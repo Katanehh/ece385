@@ -47,14 +47,13 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
-							//	end
+							else if (BallX + BallS < Ball_Target_X - 12)
+								begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
+								end
 					      		 else
                                			  		begin
-							//		accurate = 1'd0;
 									out_of_bounds = 1'd0;
 							    	end
 						   end
@@ -69,14 +68,13 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
-							//	end
+							else if (BallX + BallS < Ball_Target_X - 12)
+								begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
+								end
 					      		 else
                                			  		begin
-							//		accurate = 1'd0;
 									out_of_bounds = 1'd0;
 							    	end
 						   end
@@ -91,14 +89,13 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
-							//	end
+							else if (BallX + BallS < Ball_Target_X - 12)
+							begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
+								end
 					      		 else
                                			  		begin
-							//		accurate = 1'd0;
 									out_of_bounds = 1'd0;
 							    	end
 						   end
@@ -113,11 +110,11 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
-							//	end
+							else if (BallX + BallS < Ball_Target_X - 12)
+								begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
+								end
 					      		 else
                                			  		begin
 							//		accurate = 1'd0;
@@ -135,14 +132,13 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
-							//	end
+							else if (BallX + BallS < Ball_Target_X - 12)
+								begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
+								end
 					      		 else
                                			  		begin
-							//		accurate = 1'd0;
 									out_of_bounds = 1'd0;
 							    	end
 						   end
@@ -157,14 +153,13 @@ module  Game_Logic ( input logic Reset, frame_clk,
 									out_of_bounds = 1'd1;
 								end
 					          
-							//else if (BallX + BallS < Ball_Target_X - 8)
-							//	begin
-							//		accurate = 1'd0;
-							//		out_of_bounds = 1'd1;
+							else if (BallX + BallS < Ball_Target_X - 12)
+								begin
+									accurate = 1'd0;
+									out_of_bounds = 1'd1;
 								end
 					      		 else
                                			  		begin
-							//		accurate = 1'd0;
 									out_of_bounds = 1'd0;
 							    	end
 						   end
