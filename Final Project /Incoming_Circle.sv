@@ -18,7 +18,7 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
     parameter [9:0] Ball_X_Step=1;      // Step size on the X axis
     parameter [9:0] Ball_Y_Step=1;      // Step size on the Y axis
 
-    parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle
+    parameter [9:0] Target_X = 100; // Fixed Position of the Target Circle
     parameter [9:0] Target_Y = 240;
     
     logic balls;
@@ -53,6 +53,25 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
          end
     end
 
+//    always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
+//    begin: Move_ball
+//        if (Reset)  // asynchronous Reset - kinda useless
+//        begin 
+//		BallY <= Ball_Y_Center;
+//		BallX <= Ball_X_Max; // Ball will be at the rightmost edge
+//        end
+           
+//        else 
+//        begin
+//            if (playbackground == 1'd1 && spawn == 1'd1)
+//            begin         
+//                    BallY <= Ball_Y_Center;
+//                    balls <= balls - 1'd1;	
+//                    BallX <= balls;
+//            end	 
+//        end
+//    end
+
     always_ff @ (posedge frame_clk or posedge Reset) //make sure the frame clock is instantiated correctly
     begin: Move_ball
         if (Reset)  // asynchronous Reset - kinda useless
@@ -62,26 +81,19 @@ module  Incoming_Circle ( input logic Reset, frame_clk,
         end
            
         else 
-        begin
-            if (playbackground == 1'd1 && spawn == 1'd1)
-            begin         
-                    BallY <= Ball_Y_Center;
-                    balls <= balls - 1'd1;	
-                    BallX <= balls;
-            end	 
-
-		// else if (playbackground == 1'd1 && spawn == 1'd0)
-		// begin
-		// 	if (BallX != Ball_X_Max)
-		// 	begin
-		//	balls <= balls - 1'd1;
-		//	BallX <= balls;
-		//	end
-		// end
-
-		// else
-		// BallX <= Ball_X_Max;
+        begin 
+	        if (spawn == 1)
+            begin
+                BallY <= Ball_Y_Center;
+	           BallX <= Ball_X_Max;
+            end
+            
+            else
+            begin
+                BallY <= Ball_Y_Center;
+	            BallX <= BallX - 1;
+            end			 
         end
-    end
+     end
       
 endmodule
