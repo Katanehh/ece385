@@ -1,5 +1,5 @@
 module clock_divider #(
-    parameter DIVIDE_BY = 25000000  // Adjust the value to get the desired frequency
+    parameter DIVIDE_BY = 50000000  // Adjust the value to get the desired frequency
 )(
     input logic clk_in,
     input logic reset,
