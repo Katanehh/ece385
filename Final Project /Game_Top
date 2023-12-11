@@ -257,7 +257,7 @@ module mb_usb_hdmi_top(
         .Reset(reset_ah),
         .out_of_bounds(out_of_bounds_sig),
         .health(healthsig),
-        .counter(countersig),
+        //.counter(countersig),
         .keycode(keycode0_gpio[7:0]),
         .main(mainsig),
         .playbackground(playbackgroundsig),
