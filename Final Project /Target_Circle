@@ -4,7 +4,7 @@
 module  target_circle ( input logic frame_clk, Reset,
                         output logic [9:0]  TargetX, TargetY, TargetS );
 
-    parameter [9:0] Target_X = 50; // Fixed Position of the Target Circle on X axis
+    parameter [9:0] Target_X = 100; // Fixed Position of the Target Circle on X axis
     parameter [9:0] Target_Y = 240; //Center position of Y axis
 
     logic yes;
