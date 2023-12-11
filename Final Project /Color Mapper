@@ -15,13 +15,14 @@
 
 
 module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size, TargetX, TargetY, TargetS,
-                       input logic color,
+                       input logic color, Reset, frame_clk,
                        input logic out_of_bounds,
                        input logic main, playbackground, fail, success, spawn,
                        input logic [3:0] bckr, bckg, bckb,
-                       logic [3:0] failr, failg, failb,
-                       logic [3:0] successr, successg, successb,
-                       logic [3:0] mainr, maing, mainb,
+                       input logic [3:0] failr, failg, failb,
+                       input logic [3:0] successr, successg, successb,
+                       input logic [3:0] mainr, maing, mainb,
+                       output logic [2:0] BallCounter,
                        output logic [3:0]  Red, Green, Blue );
     
     logic ball_on;
@@ -40,19 +41,41 @@ module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
     always_comb
     begin: Ball_on_proc
         if ( (DistX*DistX + DistY*DistY) <= (Size * Size) )
-    begin
-        if (out_of_bounds == 1)
+        begin
+            if (out_of_bounds == 1)
+            begin
+                ball_on = 1'b0;
+            end
+    
+            else
+                ball_on = 1'b1;
+        end
+        else 
         begin
             ball_on = 1'b0;
         end
-
-        else
-            ball_on = 1'b1;
-    end
-        else 
-            ball_on = 1'b0;
      end 
-      
+
+logic [2:0] ball_counter = 0; // Internal counter for the number of balls drawn
+
+    // Detecting the rising edge of ball_on signal
+    logic ball_on_previous;
+    always_ff @(posedge frame_clk or posedge Reset) begin
+        if (Reset) begin
+            ball_counter <= 0;
+            ball_on_previous <= 1'b0;
+        end else begin
+            if (ball_on && !ball_on_previous) begin
+                // Increment counter when ball_on goes from 0 to 1
+                ball_counter <= ball_counter + 1;
+            end
+            ball_on_previous <= ball_on;
+        end
+    end
+
+    // Assign internal counter to output
+    assign BallCounter = ball_counter;
+
      
     always_comb
     begin: Target_on_proc
@@ -83,25 +106,25 @@ module  color_mapper ( input  logic [9:0] BallX, BallY, DrawX, DrawY, Ball_size,
         end
         
         else begin 
-            if (main == 1'b1)begin
+            if (main == 1'b1) begin
                 Red = mainr; 
                 Green = maing;
                 Blue = mainb;
             end
             
-            else if (fail == 1'b1)begin
+            else if (fail == 1'b1) begin
                 Red = failr; 
                 Green = failg;
                 Blue = failb;
             end
             
-            else if (playbackground == 1'b1)begin
+            else if (playbackground == 1'b1) begin
                 Red = bckr; 
                 Green = bckg;
                 Blue = bckb;
             end
             
-            else if (success == 1'b1)begin
+            else if (success == 1'b1) begin
                 Red = successr; 
                 Green = successg;
                 Blue = successb;
